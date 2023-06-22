@@ -34,12 +34,10 @@ class Wrangler {
 
 		let versionToUse = '';
 
-		if (version) {
-			if (semver.valid(version)) {
-				versionToUse = `@${version}`;
-			} else {
-				console.error(`Invalid version: ${version}`, 'using currently installed or latest version');
-			}
+		if (semver.valid(version)) {
+			versionToUse = `@${version}`;
+		} else {
+			console.error(`Invalid version: ${version}`, 'using currently installed or latest version');
 		}
 
 		return new Promise((resolve, reject) => {
