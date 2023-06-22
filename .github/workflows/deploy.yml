@@ -25,5 +25,5 @@ jobs:
           check-latest: true
           cache: 'npm'
       - run: npm ci
-      - run: tsc
+      - run: npm run build.types
       - run: tree ./dist
