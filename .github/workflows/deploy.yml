@@ -55,7 +55,7 @@ jobs:
         with:
           name: compiled
           path: compiled
-      - name: (LOCAL) demosjarco/wrangler-action-node
+      - name: (LOCAL) demosjarco/wrangler-action-node@${{ github.ref_name }}
         uses: ./
         with:
           apiToken: ${{ secrets.CF_API_TOKEN_TESTING }}
@@ -76,7 +76,7 @@ jobs:
         with:
           name: compiled
           path: compiled
-      - name: (LOCAL) demosjarco/wrangler-action-node
+      - name: (LOCAL) demosjarco/wrangler-action-node@${{ github.ref_name }}
         uses: ./
         with:
           apiToken: ${{ secrets.CF_API_TOKEN_TESTING }}
