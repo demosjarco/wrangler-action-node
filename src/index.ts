@@ -10,7 +10,10 @@ class Wrangler {
 
 	constructor() {
 		this.workingDirectory = this.setupWorkingDirectory(core.getInput('workingDirectory', { trimWhitespace: true }));
-		// this.installWrangler(core.getInput('wranglerVersion', { trimWhitespace: true }));
+	}
+
+	public async main() {
+		await this.installWrangler(core.getInput('wranglerVersion', { trimWhitespace: true }));
 	}
 
 	private setupWorkingDirectory(workingDirectory: string = ''): string {
@@ -47,4 +50,4 @@ class Wrangler {
 	private secret_not_found() {}
 }
 
-new Wrangler();
+await new Wrangler().main();
