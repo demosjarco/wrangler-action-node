@@ -13,10 +13,6 @@ class Wrangler {
 		// this.installWrangler(core.getInput('wranglerVersion', { trimWhitespace: true }));
 	}
 
-	private execute_commands() {}
-
-	private secret_not_found() {}
-
 	private setupWorkingDirectory(workingDirectory: string = ''): string {
 		let normalizedPath: string = '';
 		try {
@@ -42,6 +38,10 @@ class Wrangler {
 
 		exec(`npm install --save-dev wrangler${versionToUse}`);
 	}
+
+	private execute_commands() {}
+
+	private secret_not_found() {}
 }
 
 new Wrangler();
