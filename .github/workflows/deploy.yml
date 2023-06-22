@@ -57,6 +57,11 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+      - uses: actions/download-artifact@v3
+        with:
+          path: dist
+      - run: tree .
+        working-directory: dist
   test-publish_legacy_credentials:
     needs: compile-action
     strategy:
