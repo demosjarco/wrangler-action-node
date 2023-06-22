@@ -6,11 +6,7 @@ import semver from 'semver';
 import { exec } from 'node:child_process';
 
 class Wrangler {
-	private workingDirectory: string;
-
-	constructor() {
-		this.workingDirectory = this.setupWorkingDirectory(core.getInput('workingDirectory', { trimWhitespace: true }));
-	}
+	private workingDirectory: string = '';
 
 	public async main() {
 		await this.installWrangler(core.getInput('wranglerVersion', { trimWhitespace: true }));
