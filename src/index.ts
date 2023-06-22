@@ -6,10 +6,10 @@ import semver from 'semver';
 import { exec } from 'node:child_process';
 
 class Wrangler {
-	private workingDirectory?: string;
+	private workingDirectory: string;
 
 	constructor() {
-		this.setupWorkingDirectory(core.getInput('workingDirectory', { trimWhitespace: true }));
+		this.workingDirectory = this.setupWorkingDirectory(core.getInput('workingDirectory', { trimWhitespace: true }));
 		// this.installWrangler(core.getInput('wranglerVersion', { trimWhitespace: true }));
 	}
 
@@ -17,14 +17,16 @@ class Wrangler {
 
 	private secret_not_found() {}
 
-	private setupWorkingDirectory(workingDirectory: string = '') {
+	private setupWorkingDirectory(workingDirectory: string = ''): string {
+		let normalizedPath: string = '';
 		try {
-			const normalizedPath = path.normalize(workingDirectory);
-			console.log('aaa', normalizedPath);
+			normalizedPath = path.normalize(workingDirectory);
 		} catch (error) {
 			console.error(workingDirectory, 'not a valid path', error);
 			console.warn('Ignoring `workingDirectory` and using current directory');
+			normalizedPath = path.normalize('');
 		}
+		return normalizedPath;
 	}
 
 	private installWrangler(version?: string) {
