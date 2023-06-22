@@ -29,7 +29,7 @@ class Wrangler {
 		return normalizedPath;
 	}
 
-	private installWrangler(version?: string) {
+	private installWrangler(version?: string): Promise<void> {
 		console.log('aaa', version);
 
 		let versionToUse = '';
@@ -42,7 +42,22 @@ class Wrangler {
 			}
 		}
 
-		exec(`npm install --save-dev wrangler${versionToUse}`);
+		return new Promise((resolve, reject) => {
+			exec(`npm install --save-dev wrangler${versionToUse}`, { cwd: this.workingDirectory, env: process.env }, (error, stdout, stderr) => {
+				if (error) {
+					console.error(error);
+					core.setFailed(error.message);
+					reject(error);
+				}
+				if (stderr) {
+					console.error(stderr);
+					core.setFailed(stderr);
+					reject(stderr);
+				}
+				console.log(stdout);
+				resolve();
+			});
+		});
 	}
 
 	private execute_commands() {}
