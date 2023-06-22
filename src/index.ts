@@ -6,6 +6,7 @@ import { exec } from 'node:child_process';
 
 class Wrangler {
 	private workingDirectory: string = this.setupWorkingDirectory(core.getInput('workingDirectory', { trimWhitespace: true }));
+	private WRANGLER_VERSION: number = 2;
 
 	public async main() {
 		await this.installWrangler(core.getInput('wranglerVersion', { trimWhitespace: true }));
@@ -28,16 +29,18 @@ class Wrangler {
 		let packageName = 'wrangler';
 		let versionToUse = '';
 
-		if (version.length > 0) {
-			versionToUse = `@${version}`;
-			// If Wrangler version starts with 1 then install wrangler v1
-			if (version.startsWith('1')) {
-				// v1 Wrangler uses `@cloudflare` scope
-				packageName = '@cloudflare/wrangler';
-			}
-		} else {
-			// If no Wrangler version is specified install latest.
+		if (version.length === 0) {
+			// If no Wrangler version is specified install v2.
 			console.warn('Using currently installed or latest version from npm of `wrangler`');
+		} else if (version.startsWith('1')) {
+			// If Wrangler version starts with 1 then install wrangler v1
+			packageName = '@cloudflare/wrangler';
+			versionToUse = `@${version}`;
+			this.WRANGLER_VERSION = 1;
+		} else {
+			// Else install Wrangler 2
+			versionToUse = `@${version}`;
+			this.WRANGLER_VERSION = 2;
 		}
 
 		const command = `npm install --save-dev ${packageName}${versionToUse}`;
