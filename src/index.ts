@@ -5,8 +5,20 @@ import path from 'node:path';
 import { exec } from 'node:child_process';
 
 class Wrangler {
+	private API_CREDENTIALS: string = '';
 	private workingDirectory: string = this.setupWorkingDirectory(core.getInput('workingDirectory', { trimWhitespace: true }));
 	private WRANGLER_VERSION: number = 2;
+
+	private CF_API_TOKEN?: string;
+	private CLOUDFLARE_API_TOKEN?: string;
+	private CF_EMAIL?: string;
+	private CF_API_KEY?: string;
+	private CF_ACCOUNT_ID?: string;
+	private CLOUDFLARE_ACCOUNT_ID?: string;
+
+	constructor() {
+		this.authenticationSetup(core.getInput('apiToken', { trimWhitespace: true }), core.getInput('apiKey', { trimWhitespace: true }), core.getInput('email', { trimWhitespace: true }), core.getInput('accountId', { trimWhitespace: true }));
+	}
 
 	public async main() {
 		await this.installWrangler(core.getInput('wranglerVersion', { trimWhitespace: true }));
@@ -56,6 +68,54 @@ class Wrangler {
 				resolve();
 			});
 		});
+	}
+
+	private authenticationSetup(INPUT_APITOKEN: string, INPUT_APIKEY: string, INPUT_EMAIL: string, INPUT_ACCOUNTID: string) {
+		// If an API token is detected as input
+		if (INPUT_APITOKEN.length !== 0) {
+			// Wrangler v1 uses CF_API_TOKEN but v2 uses CLOUDFLARE_API_TOKEN
+			if (this.WRANGLER_VERSION === 1) {
+				this.CF_API_TOKEN = INPUT_APITOKEN;
+			} else {
+				this.CLOUDFLARE_API_TOKEN = INPUT_APITOKEN;
+			}
+
+			this.API_CREDENTIALS = 'API Token';
+		}
+
+		// If an API key and email are detected as input
+		if (INPUT_APIKEY.length !== 0 && INPUT_EMAIL.length !== 0) {
+			if (this.WRANGLER_VERSION === 1) {
+				this.CF_EMAIL = INPUT_EMAIL;
+				this.CF_API_KEY = INPUT_APIKEY;
+			} else {
+				core.setFailed('::error::Wrangler v2 does not support using the API Key. You should instead use an API token.');
+			}
+
+			this.API_CREDENTIALS = 'Email and API Key';
+		}
+
+		if (INPUT_ACCOUNTID.length !== 0) {
+			if (this.WRANGLER_VERSION === 1) {
+				this.CF_ACCOUNT_ID = INPUT_ACCOUNTID;
+			} else {
+				this.CLOUDFLARE_ACCOUNT_ID = INPUT_ACCOUNTID;
+			}
+		}
+
+		if (INPUT_APIKEY.length !== 0 && INPUT_EMAIL.length === 0) {
+			console.warn("Provided an API key without an email for authentication. Please pass in 'apiKey' and 'email' to the action.");
+		}
+
+		if (INPUT_APIKEY.length === 0 && INPUT_EMAIL.length !== 0) {
+			core.setFailed("Provided an email without an API key for authentication. Please pass in 'apiKey' and 'email' to the action.");
+		}
+
+		if (this.API_CREDENTIALS.length === 0) {
+			core.setFailed("Unable to find authentication details. Please pass in an 'apiToken' as an input to the action, or a legacy 'apiKey' and 'email'.");
+		} else {
+			console.log(`Using ${this.API_CREDENTIALS} authentication`);
+		}
 	}
 
 	private execute_commands() {}
