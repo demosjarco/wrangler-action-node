@@ -60,10 +60,6 @@ jobs:
         with:
           apiToken: ${{ secrets.CF_API_TOKEN_TESTING }}
           workingDirectory: test
-          preCommands: |
-            pretendCommand1
-            pretendCommand2
-            pretendCommand3
   test-publish:
     needs: compile-action
     strategy:
