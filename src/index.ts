@@ -44,7 +44,6 @@ class Wrangler {
 
 		if (version.length === 0) {
 			// If no Wrangler version is specified install v2.
-			console.warn('Using currently installed or latest version from npm of `wrangler`');
 		} else if (version.startsWith('1')) {
 			// If Wrangler version starts with 1 then install wrangler v1
 			packageName = '@cloudflare/wrangler';
