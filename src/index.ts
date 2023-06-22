@@ -26,12 +26,11 @@ class Wrangler {
 			normalizedPath = path.normalize('');
 		}
 		// TODO: Use `fs` to detect rwx permissions
+		console.info('Using', normalizedPath, 'as working directory');
 		return normalizedPath;
 	}
 
 	private installWrangler(version?: string): Promise<void> {
-		console.log('aaa', version);
-
 		let versionToUse = '';
 
 		if (semver.valid(version)) {
@@ -40,6 +39,7 @@ class Wrangler {
 			console.error(`Invalid version: ${version}`, 'using currently installed or latest version');
 		}
 
+		console.info(`Installing \`wrangler\`${version}`);
 		return new Promise((resolve, reject) => {
 			exec(`npm install --save-dev wrangler${versionToUse}`, { cwd: this.workingDirectory, env: process.env }, (error, stdout, stderr) => {
 				if (error) {
