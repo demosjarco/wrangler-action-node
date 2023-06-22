@@ -39,16 +39,24 @@ class Wrangler {
 	}
 
 	private installWrangler(version: string): Promise<void> {
+		let packageName = 'wrangler';
 		let versionToUse = '';
 
 		if (semver.valid(version)) {
+			// v1 Wrangler uses `@cloudflare` scope
+			switch (semver.major(version)) {
+				case 1:
+					packageName = '@cloudflare/wrangler';
+					break;
+			}
+
 			versionToUse = `@${version}`;
 		} else {
 			console.error('Invalid version:', version.length > 0 ? version : typeof undefined);
 			console.warn('Using currently installed or latest version from npm of `wrangler`');
 		}
 
-		const command = `npm install --save-dev wrangler${versionToUse}`;
+		const command = `npm install --save-dev ${packageName}${versionToUse}`;
 		console.info(command);
 		return new Promise((resolve, reject) => {
 			exec(command, { cwd: this.workingDirectory, env: process.env }, (error, stdout, stderr) => {
