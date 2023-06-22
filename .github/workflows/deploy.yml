@@ -68,6 +68,12 @@ jobs:
         with:
           name: dist
           path: dist
+      - name: (LOCAL) demosjarco/wrangler-action-node
+        uses: ./
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN_TESTING }}
+          workingDirectory: test
+          command: publish --dry-run
   test-publish_legacy_credentials:
     needs: compile-action
     strategy:
