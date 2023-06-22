@@ -2,7 +2,6 @@ import * as core from '@actions/core';
 import * as github from '@actions/github';
 
 import path from 'node:path';
-import { access, constants } from 'node:fs';
 import { exec } from 'node:child_process';
 
 class Wrangler {
@@ -13,7 +12,7 @@ class Wrangler {
 		await this.installWrangler(core.getInput('wranglerVersion', { trimWhitespace: true }));
 	}
 
-	private setupWorkingDirectory(workingDirectory: string = ''): Promise<string> {
+	private setupWorkingDirectory(workingDirectory: string = ''): string {
 		let normalizedPath: string = '';
 		try {
 			normalizedPath = path.normalize(workingDirectory);
@@ -23,18 +22,7 @@ class Wrangler {
 			normalizedPath = path.normalize('');
 		}
 
-		return new Promise<string>((resolve, reject) => {
-			access(normalizedPath, constants.R_OK | constants.W_OK | constants.X_OK, (error) => {
-				if (error) {
-					console.error(error);
-					core.setFailed(error.message);
-					reject(error);
-				}
-
-				console.info('Using', normalizedPath, 'as working directory');
-				resolve(normalizedPath);
-			});
-		});
+		return normalizedPath;
 	}
 
 	private installWrangler(version: string): Promise<void> {
