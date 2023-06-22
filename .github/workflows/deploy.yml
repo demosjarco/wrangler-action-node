@@ -73,7 +73,6 @@ jobs:
         with:
           name: dist
           path: dist
-      - run: tree ./dist
       - name: (LOCAL) demosjarco/wrangler-action-node
         uses: ./
         with:
