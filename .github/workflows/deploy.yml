@@ -48,6 +48,11 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+      - uses: actions/download-artifact@v3
+        with:
+          name: dist
+          path: dist
+      - run: tree ./dist
   test-publish:
     needs: compile-action
     strategy:
@@ -77,6 +82,11 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+      - uses: actions/download-artifact@v3
+        with:
+          name: dist
+          path: dist
+      - run: tree ./dist
   test-publish_hardcoded_wrangler_version:
     needs: compile-action
     strategy:
@@ -89,6 +99,11 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+      - uses: actions/download-artifact@v3
+        with:
+          name: dist
+          path: dist
+      - run: tree ./dist
   test-publish_secrets:
     needs: compile-action
     strategy:
@@ -101,6 +116,11 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+      - uses: actions/download-artifact@v3
+        with:
+          name: dist
+          path: dist
+      - run: tree ./dist
   publish-action:
     needs: [test-build-only, test-publish, test-publish_legacy_credentials, test-publish_hardcoded_wrangler_version, test-publish_secrets]
     runs-on: ubuntu-latest
