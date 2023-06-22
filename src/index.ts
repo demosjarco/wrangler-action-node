@@ -2,6 +2,7 @@ import * as core from '@actions/core';
 import * as github from '@actions/github';
 
 import path from 'node:path';
+import { access, constants } from 'node:fs';
 import semver from 'semver';
 import { exec } from 'node:child_process';
 
@@ -12,7 +13,7 @@ class Wrangler {
 		await this.installWrangler(core.getInput('wranglerVersion', { trimWhitespace: true }));
 	}
 
-	private setupWorkingDirectory(workingDirectory: string = ''): string {
+	private setupWorkingDirectory(workingDirectory: string = ''): Promise<string> {
 		let normalizedPath: string = '';
 		try {
 			normalizedPath = path.normalize(workingDirectory);
@@ -21,9 +22,15 @@ class Wrangler {
 			console.warn('Ignoring `workingDirectory` and using current directory');
 			normalizedPath = path.normalize('');
 		}
-		// TODO: Use `fs` to detect rwx permissions
-		console.info('Using', normalizedPath, 'as working directory');
-		return normalizedPath;
+
+		return new Promise<string>((resolve, reject) => {
+			access(normalizedPath, constants.R_OK | constants.W_OK | constants.X_OK, (error) => {
+				if (error) reject(error);
+
+				console.info('Using', normalizedPath, 'as working directory');
+				resolve(normalizedPath);
+			});
+		});
 	}
 
 	private installWrangler(version: string): Promise<void> {
