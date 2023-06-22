@@ -97,13 +97,5 @@
 		/* Completeness */
 		// "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
 		"skipLibCheck": true /* Skip type checking all .d.ts files. */
-	},
-	"ts-node": {
-		"swc": true,
-		"compilerOptions": {
-			"module": "CommonJS",
-			"moduleResolution": "NodeNext"
-			// "types": ["node", "glob", "string.prototype.matchall", "yargs"]
-		}
 	}
 }
