@@ -32,7 +32,8 @@ jobs:
       - run: npm ci
       - name: Install action compiler
         run: npm install -D @vercel/ncc
-      - run: npx ncc build src/index.ts -o dist
+      - name: Compile action
+        run: npx ncc build src/index.ts -o dist
       - uses: actions/upload-artifact@v3
         with:
           name: dist
