@@ -31,4 +31,8 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm run build.types
-      - run: tree ./dist
+      - uses: actions/upload-artifact@v3
+        with:
+          path: dist/**/*.js
+          if-no-files-found: error
+          retention-days: 1
