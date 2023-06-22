@@ -61,8 +61,7 @@ jobs:
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
       - uses: actions/download-artifact@v3
-      - run: tree .
-        working-directory: dist
+      - run: tree ./dist
   test-publish_legacy_credentials:
     needs: compile-action
     strategy:
