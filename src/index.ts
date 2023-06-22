@@ -26,6 +26,8 @@ class Wrangler {
 	}
 
 	private installWrangler(version?: string) {
+		console.log('aaa', version);
+
 		let versionToUse = '';
 
 		if (version) {
