@@ -18,7 +18,10 @@ class Wrangler {
 	private secret_not_found() {}
 
 	private setupWorkingDirectory(workingDirectory?: string) {
-		console.log('aaa', workingDirectory);
+		try {
+			const normalizedPath = path.normalize(workingDirectory);
+			console.log('aaa', normalizedPath);
+		} catch (error) {}
 	}
 
 	private installWrangler(version?: string) {
