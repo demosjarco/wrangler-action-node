@@ -3,7 +3,6 @@ import * as github from '@actions/github';
 
 import path from 'node:path';
 import { access, constants } from 'node:fs';
-import semver from 'semver';
 import { exec } from 'node:child_process';
 
 class Wrangler {
@@ -42,17 +41,15 @@ class Wrangler {
 		let packageName = 'wrangler';
 		let versionToUse = '';
 
-		if (semver.valid(version)) {
-			// v1 Wrangler uses `@cloudflare` scope
-			switch (semver.major(version)) {
-				case 1:
-					packageName = '@cloudflare/wrangler';
-					break;
-			}
-
+		if (version.length > 0) {
 			versionToUse = `@${version}`;
+			// If Wrangler version starts with 1 then install wrangler v1
+			if (version.startsWith('1')) {
+				// v1 Wrangler uses `@cloudflare` scope
+				packageName = '@cloudflare/wrangler';
+			}
 		} else {
-			console.error('Invalid version:', version.length > 0 ? version : typeof undefined);
+			// If no Wrangler version is specified install latest.
 			console.warn('Using currently installed or latest version from npm of `wrangler`');
 		}
 
