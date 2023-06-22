@@ -17,7 +17,7 @@ class Wrangler {
 
 	private secret_not_found() {}
 
-	private setupWorkingDirectory(workingDirectory?: string) {
+	private setupWorkingDirectory(workingDirectory: string = '') {
 		try {
 			const normalizedPath = path.normalize(workingDirectory);
 			console.log('aaa', normalizedPath);
