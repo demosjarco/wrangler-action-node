@@ -82,7 +82,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CF_API_TOKEN_TESTING }}
           workingDirectory: test
-          preCommands: npm ci
+          preCommands: whoami
           command: publish --dry-run
   # test-publish_legacy_credentials:
   #   needs: compile-action
