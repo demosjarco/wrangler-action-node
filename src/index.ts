@@ -26,7 +26,11 @@ class Wrangler {
 
 		return new Promise<string>((resolve, reject) => {
 			access(normalizedPath, constants.R_OK | constants.W_OK | constants.X_OK, (error) => {
-				if (error) reject(error);
+				if (error) {
+					console.error(error);
+					core.setFailed(error.message);
+					reject(error);
+				}
 
 				console.info('Using', normalizedPath, 'as working directory');
 				resolve(normalizedPath);
