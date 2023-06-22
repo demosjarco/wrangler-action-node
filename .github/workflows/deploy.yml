@@ -59,6 +59,7 @@ jobs:
         uses: ./
         with:
           apiToken: ${{ secrets.CF_API_TOKEN_TESTING }}
+          workingDirectory: test
   test-publish:
     needs: compile-action
     strategy:
