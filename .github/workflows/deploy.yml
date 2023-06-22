@@ -35,3 +35,58 @@ jobs:
           path: dist/**/*.js
           if-no-files-found: error
           retention-days: 1
+  test-build-only:
+    needs: compile-action
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: step-security/harden-runner@v2
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+  test-publish:
+    needs: compile-action
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: step-security/harden-runner@v2
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+  test-publish_legacy_credentials:
+    needs: compile-action
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: step-security/harden-runner@v2
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+  test-publish_hardcoded_wrangler_version:
+    needs: compile-action
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: step-security/harden-runner@v2
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+  test-publish_secrets:
+    needs: compile-action
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: step-security/harden-runner@v2
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
