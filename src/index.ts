@@ -5,10 +5,9 @@ import path from 'node:path';
 import { exec } from 'node:child_process';
 
 class Wrangler {
-	private workingDirectory: string = '';
+	private workingDirectory: string = this.setupWorkingDirectory(core.getInput('workingDirectory', { trimWhitespace: true }));
 
 	public async main() {
-		this.workingDirectory = await this.setupWorkingDirectory(core.getInput('workingDirectory', { trimWhitespace: true }));
 		await this.installWrangler(core.getInput('wranglerVersion', { trimWhitespace: true }));
 	}
 
