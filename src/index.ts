@@ -58,7 +58,7 @@ class Wrangler {
 		}
 
 		const command = `npm install --save-dev ${packageName}${versionToUse}`;
-		console.info(command);
+		console.info(`$ Running: ${command}`);
 		return new Promise((resolve, reject) => {
 			exec(command, { cwd: this.workingDirectory, env: process.env }, (error, stdout, stderr) => {
 				if (error) {
