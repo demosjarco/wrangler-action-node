@@ -21,7 +21,10 @@ class Wrangler {
 		try {
 			const normalizedPath = path.normalize(workingDirectory);
 			console.log('aaa', normalizedPath);
-		} catch (error) {}
+		} catch (error) {
+			console.error(workingDirectory, 'not a valid path', error);
+			console.warn('Ignoring `workingDirectory` and using current directory');
+		}
 	}
 
 	private installWrangler(version?: string) {
