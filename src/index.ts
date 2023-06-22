@@ -10,6 +10,7 @@ class Wrangler {
 	private workingDirectory: string = '';
 
 	public async main() {
+		this.workingDirectory = await this.setupWorkingDirectory(core.getInput('workingDirectory', { trimWhitespace: true }));
 		await this.installWrangler(core.getInput('wranglerVersion', { trimWhitespace: true }));
 	}
 
