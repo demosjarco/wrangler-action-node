@@ -32,6 +32,7 @@ jobs:
       - run: npm run build.types
       - uses: actions/upload-artifact@v3
         with:
+          name: dist
           path: dist/**/*.js
           if-no-files-found: error
           retention-days: 1
@@ -58,8 +59,6 @@ jobs:
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
       - uses: actions/download-artifact@v3
-        with:
-          path: dist
       - run: tree .
         working-directory: dist
   test-publish_legacy_credentials:
