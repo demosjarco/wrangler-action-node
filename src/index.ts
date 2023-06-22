@@ -22,6 +22,7 @@ class Wrangler {
 			console.warn('Ignoring `workingDirectory` and using current directory');
 			normalizedPath = path.normalize('');
 		}
+		// TODO: Use `fs` to detect rwx permissions
 		return normalizedPath;
 	}
 
