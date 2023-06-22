@@ -22,7 +22,9 @@ class Wrangler {
 
 	public async main() {
 		await this.installWrangler(core.getInput('wranglerVersion', { trimWhitespace: true }));
-		this.execute_commands(core.getMultilineInput('preCommands', { trimWhitespace: true }));
+		await this.execute_commands(core.getMultilineInput('preCommands', { trimWhitespace: true }));
+		// TODO
+		await this.execute_commands(core.getMultilineInput('postCommands', { trimWhitespace: true }));
 	}
 
 	private setupWorkingDirectory(workingDirectory: string = ''): string {
@@ -118,8 +120,34 @@ class Wrangler {
 		}
 	}
 
-	private execute_commands(commands: string[]) {
-		console.log('aaa', commands);
+	private execute_commands(commands: string[]): Promise<void> {
+		// Global promise to safely wait for all subcommands to finish
+		return new Promise<void>(async (mainResolve, mainReject) => {
+			let childError = false;
+			for (const command of commands) {
+				// Print out command before running
+				console.info(command);
+				// Promise to wait for subcommand to finish before moving to next
+				await new Promise<void>((childResolve, childReject) => {
+					exec(command, { cwd: this.workingDirectory, env: process.env }, (error, stdout, stderr) => {
+						if (error) {
+							childError = true;
+							console.error(error);
+							core.setFailed(error.message);
+							childReject(error);
+						}
+						console.log(stdout);
+						childResolve();
+					});
+				});
+			}
+			if (childError) {
+				core.setFailed('command failure');
+				mainReject();
+			} else {
+				mainResolve();
+			}
+		});
 	}
 
 	private secret_not_found() {}
