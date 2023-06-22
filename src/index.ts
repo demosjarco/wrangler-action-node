@@ -30,13 +30,13 @@ class Wrangler {
 		return normalizedPath;
 	}
 
-	private installWrangler(version?: string): Promise<void> {
+	private installWrangler(version: string): Promise<void> {
 		let versionToUse = '';
 
 		if (semver.valid(version)) {
 			versionToUse = `@${version}`;
 		} else {
-			console.error('Invalid version:', version ? version : typeof version, 'using currently installed or latest version');
+			console.error('Invalid version:', version.length > 0 ? version : typeof undefined, 'using currently installed or latest version');
 		}
 
 		console.info(`Installing \`wrangler\`${version}`);
