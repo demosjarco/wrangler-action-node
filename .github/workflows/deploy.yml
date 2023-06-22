@@ -1,4 +1,14 @@
-on: push
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - '.github/workflows/deploy.yml'
+      - 'src/**'
+      - 'test/**'
+      - 'action.yml'
+      - 'package-lock.json'
+      - 'tsconfig.json'
 
 jobs:
   compile-action:
