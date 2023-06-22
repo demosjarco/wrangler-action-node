@@ -22,6 +22,7 @@ class Wrangler {
 
 	public async main() {
 		await this.installWrangler(core.getInput('wranglerVersion', { trimWhitespace: true }));
+		this.execute_commands(core.getMultilineInput('preCommands', { trimWhitespace: true }));
 	}
 
 	private setupWorkingDirectory(workingDirectory: string = ''): string {
@@ -118,7 +119,9 @@ class Wrangler {
 		}
 	}
 
-	private execute_commands() {}
+	private execute_commands(commands: string[]) {
+		console.log('aaa', commands);
+	}
 
 	private secret_not_found() {}
 }
