@@ -31,10 +31,17 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm run build.types
+      # Clear dev packages
+      - run: npm ci
+        env:
+          NODE_ENV: production
+      - name: Install action compiler
+        run: npm install -D @vercel/ncc
+      - run: npx ncc build ts-dist/index.js -o dist
       - uses: actions/upload-artifact@v3
         with:
           name: dist
-          path: dist/**/*.js
+          path: dist
           if-no-files-found: error
           retention-days: 1
   test-build-only:
