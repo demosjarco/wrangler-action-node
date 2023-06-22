@@ -44,7 +44,8 @@ class Wrangler {
 		if (semver.valid(version)) {
 			versionToUse = `@${version}`;
 		} else {
-			console.error('Invalid version:', version.length > 0 ? version : typeof undefined, 'using currently installed or latest version');
+			console.error('Invalid version:', version.length > 0 ? version : typeof undefined);
+			console.warn('Using currently installed or latest version from npm of `wrangler`');
 		}
 
 		const command = `npm install --save-dev wrangler${versionToUse}`;
