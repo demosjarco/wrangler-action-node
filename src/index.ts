@@ -39,9 +39,10 @@ class Wrangler {
 			console.error('Invalid version:', version.length > 0 ? version : typeof undefined, 'using currently installed or latest version');
 		}
 
-		console.info(`Installing \`wrangler\`${version}`);
+		const command = `npm install --save-dev wrangler${versionToUse}`;
+		console.info(command);
 		return new Promise((resolve, reject) => {
-			exec(`npm install --save-dev wrangler${versionToUse}`, { cwd: this.workingDirectory, env: process.env }, (error, stdout, stderr) => {
+			exec(command, { cwd: this.workingDirectory, env: process.env }, (error, stdout, stderr) => {
 				if (error) {
 					console.error(error);
 					core.setFailed(error.message);
