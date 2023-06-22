@@ -57,6 +57,10 @@ jobs:
         with:
           name: compiled
           path: compiled
+      - name: (LOCAL) demosjarco/wrangler-action-node
+        uses: ./
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN_TESTING }}
   test-publish:
     needs: compile-action
     strategy:
