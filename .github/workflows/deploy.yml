@@ -33,11 +33,11 @@ jobs:
       - name: Install action compiler
         run: npm install -D @vercel/ncc
       - name: Compile action
-        run: npx ncc build src/index.ts -o dist
+        run: npx ncc build src/index.ts -o compiled
       - uses: actions/upload-artifact@v3
         with:
-          name: dist
-          path: dist
+          name: compiled
+          path: compiled
           if-no-files-found: error
           retention-days: 1
   test-build-only:
@@ -55,8 +55,8 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/download-artifact@v3
         with:
-          name: dist
-          path: dist
+          name: compiled
+          path: compiled
   test-publish:
     needs: compile-action
     strategy:
@@ -72,8 +72,8 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/download-artifact@v3
         with:
-          name: dist
-          path: dist
+          name: compiled
+          path: compiled
       - name: (LOCAL) demosjarco/wrangler-action-node
         uses: ./
         with:
@@ -95,8 +95,8 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/download-artifact@v3
         with:
-          name: dist
-          path: dist
+          name: compiled
+          path: compiled
   test-publish_hardcoded_wrangler_version:
     needs: compile-action
     strategy:
@@ -112,8 +112,8 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/download-artifact@v3
         with:
-          name: dist
-          path: dist
+          name: compiled
+          path: compiled
   test-publish_secrets:
     needs: compile-action
     strategy:
@@ -129,8 +129,8 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/download-artifact@v3
         with:
-          name: dist
-          path: dist
+          name: compiled
+          path: compiled
   publish-action:
     needs: [test-build-only, test-publish, test-publish_legacy_credentials, test-publish_hardcoded_wrangler_version, test-publish_secrets]
     runs-on: ubuntu-latest
@@ -138,4 +138,4 @@ jobs:
       - uses: step-security/harden-runner@v2
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
-      # Commit ./dist for it to work
+      # Commit ./compiled for it to work
