@@ -49,11 +49,6 @@ class Wrangler {
 					core.setFailed(error.message);
 					reject(error);
 				}
-				if (stderr) {
-					console.error(stderr);
-					core.setFailed(stderr);
-					reject(stderr);
-				}
 				console.log(stdout);
 				resolve();
 			});
