@@ -2,6 +2,7 @@
 	"name": "wrangler-action-node",
 	"version": "0.0.0",
 	"description": "Easy-to-use GitHub Action to use [Wrangler](https://developers.cloudflare.com/workers/cli-wrangler/). Makes deploying Workers, Pages or modifying R2 easy to do.",
+	"type": "module",
 	"scripts": {
 		"build.types": "tsc --incremental",
 		"build.types:watch": "npm run build.types -- --watch"
