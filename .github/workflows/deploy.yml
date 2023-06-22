@@ -18,8 +18,7 @@ jobs:
   compile-action:
     runs-on: ubuntu-latest
     steps:
-      - name: Harden Runner
-        uses: step-security/harden-runner@v2
+      - uses: step-security/harden-runner@v2
         with:
           disable-sudo: true
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
