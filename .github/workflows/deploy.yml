@@ -21,6 +21,7 @@ jobs:
       - name: Harden Runner
         uses: step-security/harden-runner@v2
         with:
+          disable-sudo: true
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
