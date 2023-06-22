@@ -1,0 +1,22 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Action Build",
+			"dependsOn": ["build.types"],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"label": "build.types",
+			"detail": "tsc --incremental --watch",
+			"type": "npm",
+			"script": "build.types:watch",
+			"presentation": {
+				"group": "compile"
+			}
+		}
+	]
+}
