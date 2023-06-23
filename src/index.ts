@@ -185,6 +185,8 @@ class Wrangler {
 				}
 
 				await new Promise<void>((childResolve, childReject) => {
+					console.log('process.env', JSON.stringify(process.env, null, '\t'));
+
 					const child = spawn(secretCommand.shift()!, secretCommand, { cwd: this.workingDirectory, env: process.env, stdio: 'pipe' });
 
 					child.stdin.write(VALUE);
