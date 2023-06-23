@@ -169,11 +169,17 @@ jobs:
         env:
           SECRET1: ${{ secrets.SECRET1 }}
           SECRET2: ${{ secrets.SECRET2 }}
-  #   if: github.ref_name == 'main' # This job only runs on the main branch
-  #   needs: [test-build-only, test-publish, test-publish_legacy_credentials, test-publish_hardcoded_wrangler_version, test-publish_secrets]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: step-security/harden-runner@v2
-  #       with:
-  #         egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
-  #     # Commit ./compiled for it to work
+  publish-action:
+    if: github.ref_name == 'main'
+    needs: [test-build-only, test-publish, test-publish_legacy_credentials, test-publish_hardcoded_wrangler_version, test-publish_secrets]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
+        with:
+          name: compiled
+          path: compiled
+      # Commit ./compiled for it to work
