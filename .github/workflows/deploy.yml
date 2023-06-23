@@ -244,5 +244,6 @@ jobs:
         run: |
           git config user.name "DemosJarco"
           git config user.email "1209494+demosjarco@users.noreply.github.com"
-      - run: git commit -am "${{ github.event.head_commit.message }}"
+      - run: git add compiled/
+      - run: git commit -m "${{ github.event.head_commit.message }}"
       - run: git push
