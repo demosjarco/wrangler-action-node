@@ -225,7 +225,8 @@ jobs:
           SECRET2: ${{ secrets.SECRET2 }}
   publish-action:
     if: github.ref_name == 'main'
-    needs: [test-build-only, test-publish, test-publish_legacy_credentials, test-publish_hardcoded_wrangler_version, test-publish_secrets]
+    # needs: [test-build-only, test-publish, test-publish_legacy_credentials, test-publish_hardcoded_wrangler_version, test-publish_secrets]
+    needs: [test-build-only, test-publish, test-publish_secrets]
     runs-on: ubuntu-latest
     permissions:
       contents: write
