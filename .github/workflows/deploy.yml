@@ -60,6 +60,18 @@ jobs:
         with:
           apiToken: ${{ secrets.CF_API_TOKEN_TESTING }}
           workingDirectory: test
+          publish: false
+          secrets: |
+            SECRET1
+            SECRET2
+          preCommands: echo "*** pre commands ***"
+          postCommands: |
+            echo "*** post commands ***"
+            wrangler build
+            echo "******"
+        env:
+          SECRET1: ${{ secrets.SECRET1 }}
+          SECRET2: ${{ secrets.SECRET2 }}
   test-publish:
     needs: compile-action
     strategy:
@@ -81,9 +93,8 @@ jobs:
         uses: ./
         with:
           apiToken: ${{ secrets.CF_API_TOKEN_TESTING }}
+          environment: 'production'
           workingDirectory: test
-          preCommands: whoami
-          command: publish
   test-publish_legacy_credentials:
     needs: compile-action
     strategy:
@@ -108,7 +119,6 @@ jobs:
           email: ${{ secrets.CLOUDFLARE_EMAIL_TESTING }}
           environment: 'production'
           workingDirectory: 'test'
-          command: publish
   test-publish_hardcoded_wrangler_version:
     needs: compile-action
     strategy:
@@ -134,7 +144,6 @@ jobs:
           environment: 'production'
           wranglerVersion: '1.5.0'
           workingDirectory: 'test'
-          command: publish
   test-publish_secrets:
     needs: compile-action
     strategy:
@@ -162,7 +171,6 @@ jobs:
             SECRET1
             SECRET2
           preCommands: echo "*** pre command ***"
-          command: publish
           postCommands: |
             echo "*** post commands ***"
             echo "******"
