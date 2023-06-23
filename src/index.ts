@@ -76,8 +76,10 @@ class Wrangler {
 			// Wrangler v1 uses CF_API_TOKEN but v2 uses CLOUDFLARE_API_TOKEN
 			if (this.WRANGLER_VERSION === 1) {
 				this.CF_API_TOKEN = INPUT_APITOKEN;
+				process.env.CF_API_TOKEN = INPUT_APITOKEN;
 			} else {
 				this.CLOUDFLARE_API_TOKEN = INPUT_APITOKEN;
+				process.env.CLOUDFLARE_API_TOKEN = INPUT_APITOKEN;
 			}
 
 			this.API_CREDENTIALS = 'API Token';
@@ -87,7 +89,9 @@ class Wrangler {
 		if (INPUT_APIKEY.length !== 0 && INPUT_EMAIL.length !== 0) {
 			if (this.WRANGLER_VERSION === 1) {
 				this.CF_EMAIL = INPUT_EMAIL;
+				process.env.CF_EMAIL = INPUT_EMAIL;
 				this.CF_API_KEY = INPUT_APIKEY;
+				process.env.CF_API_KEY = INPUT_APIKEY;
 			} else {
 				const errorMsg = '::error::Wrangler v2 does not support using the API Key. You should instead use an API token.';
 				core.setFailed(errorMsg);
@@ -100,8 +104,10 @@ class Wrangler {
 		if (INPUT_ACCOUNTID.length !== 0) {
 			if (this.WRANGLER_VERSION === 1) {
 				this.CF_ACCOUNT_ID = INPUT_ACCOUNTID;
+				process.env.CF_ACCOUNT_ID = INPUT_ACCOUNTID;
 			} else {
 				this.CLOUDFLARE_ACCOUNT_ID = INPUT_ACCOUNTID;
+				process.env.CLOUDFLARE_ACCOUNT_ID = INPUT_ACCOUNTID;
 			}
 		}
 
