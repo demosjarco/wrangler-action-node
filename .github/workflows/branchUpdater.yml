@@ -1,0 +1,47 @@
+on:
+  push:
+    tags:
+      - 'v*'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: step-security/harden-runner@v2
+        with:
+          disable-sudo: true
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Setup Git
+        run: |
+          git config --local user.name "DemosJarco"
+          git config --local user.email "1209494+demosjarco@users.noreply.github.com"
+      - name: Extract major version from tag
+        run: |
+          VERSION=$(echo ${GITHUB_REF#refs/tags/} | cut -d. -f1)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+      - name: Fetch branches from origin
+        run: |
+          git fetch origin
+      - name: Check if branch exists and create if not
+        run: |
+          if ! git show-ref --verify --quiet refs/remotes/origin/$VERSION; then
+            git branch $VERSION
+          fi
+      - name: Checkout to major version branch
+        run: |
+          git checkout $VERSION
+      - name: Merge tag into major version branch
+        run: |
+          git merge -m "Merge tag ${GITHUB_REF#refs/tags/}" $GITHUB_SHA
+      - name: Push major version branch to origin
+        run: |
+          git push origin $VERSION
