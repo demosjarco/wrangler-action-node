@@ -1,7 +1,7 @@
 on:
   push:
-    tags-ignore:
-      - '*'
+    branches:
+      - '**'
     paths:
       - '.github/workflows/deploy.yml'
       - 'src/**'
@@ -10,6 +10,8 @@ on:
       - 'package.json'
       - 'package-lock.json'
       - 'tsconfig.json'
+    tags-ignore:
+      - '**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
