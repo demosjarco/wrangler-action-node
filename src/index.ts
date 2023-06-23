@@ -2,7 +2,7 @@ import * as core from '@actions/core';
 import * as github from '@actions/github';
 
 import path from 'node:path';
-import { exec } from 'node:child_process';
+import { exec, spawn } from 'node:child_process';
 
 class Wrangler {
 	private API_CREDENTIALS: string = '';
@@ -23,6 +23,7 @@ class Wrangler {
 	public async main() {
 		await this.installWrangler(core.getInput('wranglerVersion'));
 		await this.execute_commands(core.getMultilineInput('preCommands'));
+		await this.putSecrets(core.getMultilineInput('secrets'), core.getInput('environment'));
 		// TODO
 		await this.execute_commands(core.getMultilineInput('postCommands'));
 	}
@@ -150,6 +151,74 @@ class Wrangler {
 				mainResolve();
 			}
 		});
+	}
+
+	private putSecrets(INPUT_SECRETS: string[], INPUT_ENVIRONMENT: string): Promise<PromiseSettledResult<void>[]> {
+		let secretPromises: Promise<void>[] = [];
+		for (const secret of INPUT_SECRETS) {
+			let VALUE: string;
+			if (process.env[secret] && process.env[secret]?.length !== 0) {
+				VALUE = process.env[secret]!;
+			} else {
+				this.secret_not_found(secret);
+			}
+
+			if (INPUT_ENVIRONMENT.length === 0) {
+				secretPromises.push(
+					new Promise<void>((resolve, reject) => {
+						const child = spawn(`wrangler secret put ${secret}`, [], { cwd: this.workingDirectory, env: process.env, stdio: 'pipe' });
+
+						child.stdin.write(process.env[secret]);
+						child.stdin.end();
+
+						child.stdout.on('data', (data) => console.log(data));
+
+						child.stderr.on('data', (data) => console.error(data));
+
+						child.once('error', (error) => {
+							console.error(error);
+							core.setFailed(error.message);
+							reject(error);
+						});
+
+						child.once('close', (code) => {
+							if (code !== 0) {
+								const errorMsg = `child process exited with code ${code}`;
+								console.error(errorMsg);
+								core.setFailed(errorMsg);
+								reject(new Error(errorMsg));
+							} else {
+								resolve();
+							}
+						});
+					}),
+				);
+			} else {
+				secretPromises.push(
+					new Promise<void>((resolve, reject) => {
+						const child = spawn(`wrangler secret put ${secret} --env ${INPUT_ENVIRONMENT}`, [], { cwd: this.workingDirectory, env: process.env, stdio: 'pipe' });
+
+						child.stdin.write(process.env[secret]);
+						child.stdin.end();
+
+						child.stdout.on('data', (data) => console.log(data));
+
+						child.stderr.on('data', (data) => console.error(data));
+
+						child.once('error', (error) => reject(error));
+
+						child.once('close', (code) => {
+							if (code !== 0) {
+								reject(new Error(`child process exited with code ${code}`));
+							} else {
+								resolve();
+							}
+						});
+					}),
+				);
+			}
+		}
+		return Promise.allSettled(secretPromises);
 	}
 
 	private secret_not_found(secret: string) {
