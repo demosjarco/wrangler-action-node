@@ -165,59 +165,39 @@ class Wrangler {
 					mainReject();
 				}
 
+				let secretCommand: string[] = [];
+
 				if (INPUT_ENVIRONMENT.length === 0) {
-					await new Promise<void>((childResolve, childReject) => {
-						const child = spawn(`wrangler secret put ${secret}`, [], { cwd: this.workingDirectory, env: process.env, stdio: 'pipe' });
-
-						child.stdin.write(VALUE);
-						child.stdin.end();
-
-						child.stdout.on('data', (data) => console.log(data));
-
-						child.once('error', (error) => {
-							console.error(error);
-							core.setFailed(error.message);
-							childReject(error);
-						});
-
-						child.once('close', (code) => {
-							if (code !== 0) {
-								const errorMsg = `child process exited with code ${code}`;
-								console.error(errorMsg);
-								core.setFailed(errorMsg);
-								childReject(new Error(errorMsg));
-							} else {
-								childResolve();
-							}
-						});
-					});
+					secretCommand = `wrangler secret put ${secret}`.split(' ');
 				} else {
-					await new Promise<void>((childResolve, childReject) => {
-						const child = spawn(`wrangler secret put ${secret} --env ${INPUT_ENVIRONMENT}`, [], { cwd: this.workingDirectory, env: process.env, stdio: 'pipe' });
-
-						child.stdin.write(VALUE);
-						child.stdin.end();
-
-						child.stdout.on('data', (data) => console.log(data));
-
-						child.once('error', (error) => {
-							console.error(error);
-							core.setFailed(error.message);
-							childReject(error);
-						});
-
-						child.once('close', (code) => {
-							if (code !== 0) {
-								const errorMsg = `child process exited with code ${code}`;
-								console.error(errorMsg);
-								core.setFailed(errorMsg);
-								childReject(new Error(errorMsg));
-							} else {
-								childResolve();
-							}
-						});
-					});
+					secretCommand = `wrangler secret put ${secret} --env ${INPUT_ENVIRONMENT}`.split(' ');
 				}
+
+				await new Promise<void>((childResolve, childReject) => {
+					const child = spawn(secretCommand.shift()!, secretCommand, { cwd: this.workingDirectory, env: process.env, stdio: 'pipe' });
+
+					child.stdin.write(VALUE);
+					child.stdin.end();
+
+					child.stdout.on('data', (data) => console.log(data));
+
+					child.once('error', (error) => {
+						console.error(error);
+						core.setFailed(error.message);
+						childReject(error);
+					});
+
+					child.once('close', (code) => {
+						if (code !== 0) {
+							const errorMsg = `child process exited with code ${code}`;
+							console.error(errorMsg);
+							core.setFailed(errorMsg);
+							childReject(new Error(errorMsg));
+						} else {
+							childResolve();
+						}
+					});
+				});
 			}
 			if (childError) {
 				core.setFailed('command failure');
