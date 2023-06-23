@@ -174,8 +174,6 @@ class Wrangler {
 
 						child.stdout.on('data', (data) => console.log(data));
 
-						child.stderr.on('data', (data) => console.error(data));
-
 						child.once('error', (error) => {
 							console.error(error);
 							core.setFailed(error.message);
@@ -201,8 +199,6 @@ class Wrangler {
 						child.stdin.end();
 
 						child.stdout.on('data', (data) => console.log(data));
-
-						child.stderr.on('data', (data) => console.error(data));
 
 						child.once('error', (error) => {
 							console.error(error);
