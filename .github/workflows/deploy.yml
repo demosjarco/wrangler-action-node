@@ -56,7 +56,7 @@ jobs:
           node-version: lts/*
           check-latest: true
           cache: 'npm'
-          cache-dependency-path: 'temp/package-lock.json'
+          cache-dependency-path: 'test/package-lock.json'
       - uses: actions/download-artifact@v3
         with:
           name: compiled
@@ -97,7 +97,7 @@ jobs:
           node-version: lts/*
           check-latest: true
           cache: 'npm'
-          cache-dependency-path: 'temp/package-lock.json'
+          cache-dependency-path: 'test/package-lock.json'
       - uses: actions/download-artifact@v3
         with:
           name: compiled
@@ -127,7 +127,7 @@ jobs:
           node-version: lts/*
           check-latest: true
           cache: 'npm'
-          cache-dependency-path: 'temp/package-lock.json'
+          cache-dependency-path: 'test/package-lock.json'
       - uses: actions/download-artifact@v3
         with:
           name: compiled
@@ -159,7 +159,7 @@ jobs:
           node-version: lts/*
           check-latest: true
           cache: 'npm'
-          cache-dependency-path: 'temp/package-lock.json'
+          cache-dependency-path: 'test/package-lock.json'
       - uses: actions/download-artifact@v3
         with:
           name: compiled
@@ -191,7 +191,7 @@ jobs:
           node-version: lts/*
           check-latest: true
           cache: 'npm'
-          cache-dependency-path: 'temp/package-lock.json'
+          cache-dependency-path: 'test/package-lock.json'
       - uses: actions/download-artifact@v3
         with:
           name: compiled
