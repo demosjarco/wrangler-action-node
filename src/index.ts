@@ -38,20 +38,20 @@ class Wrangler {
 		return normalizedPath;
 	}
 
-	private installWrangler(version: string): Promise<void> {
+	private installWrangler(INPUT_WRANGLERVERSION: string): Promise<void> {
 		let packageName = 'wrangler';
 		let versionToUse = '';
 
-		if (version.length === 0) {
+		if (INPUT_WRANGLERVERSION.length === 0) {
 			// If no Wrangler version is specified install v2.
-		} else if (version.startsWith('1')) {
+		} else if (INPUT_WRANGLERVERSION.startsWith('1')) {
 			// If Wrangler version starts with 1 then install wrangler v1
 			packageName = '@cloudflare/wrangler';
-			versionToUse = `@${version}`;
+			versionToUse = `@${INPUT_WRANGLERVERSION}`;
 			this.WRANGLER_VERSION = 1;
 		} else {
 			// Else install Wrangler 2
-			versionToUse = `@${version}`;
+			versionToUse = `@${INPUT_WRANGLERVERSION}`;
 			this.WRANGLER_VERSION = 2;
 		}
 
