@@ -1,5 +1,7 @@
 # Wrangler (Node Edition) GitHub Action
 
+> This is a direct logic copy of [@cloudflare/wrangler-action](https://github.com/cloudflare/wrangler-action) but written in pure Node.JS without any external dependencies
+
 Easy-to-use GitHub Action to use [Wrangler](https://developers.cloudflare.com/workers/cli-wrangler/). Makes deploying Workers, Pages or modifying R2 easy to do.
 
 [Refer to Changelog for more information](CHANGELOG.md).
@@ -12,20 +14,20 @@ Add `wrangler-action` to the workflow for your Workers/Pages application. The be
 name: Deploy
 
 on:
-  push:
-    branches:
-      - main
+    push:
+        branches:
+            - main
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    name: Deploy
-    steps:
-      - uses: actions/checkout@v2
-      - name: Publish
-        uses: cloudflare/wrangler-action@2.0.0
-        with:
-          apiToken: ${{ secrets.CF_API_TOKEN }}
+    deploy:
+        runs-on: ubuntu-latest
+        name: Deploy
+        steps:
+            - uses: actions/checkout@v2
+            - name: Publish
+              uses: cloudflare/wrangler-action@2.0.0
+              with:
+                  apiToken: ${{ secrets.CF_API_TOKEN }}
 ```
 
 ## Authentication
@@ -36,25 +38,25 @@ With your API token set as a secret for your repository, pass it to the action i
 
 ```yaml
 jobs:
-  deploy:
-    name: Deploy
-    steps:
-      uses: cloudflare/wrangler-action@2.0.0
-      with:
-        apiToken: ${{ secrets.CF_API_TOKEN }}
+    deploy:
+        name: Deploy
+        steps:
+            uses: cloudflare/wrangler-action@2.0.0
+            with:
+                apiToken: ${{ secrets.CF_API_TOKEN }}
 ```
 
 `wrangler-action` also supports using your [global API key and email](https://developers.cloudflare.com/workers/quickstart/#global-api-key) as an authentication method, although API tokens are preferred. Pass in `apiKey` and `email` to the GitHub Action to use this method:
 
 ```yaml
 jobs:
-  deploy:
-    name: Deploy
-    steps:
-      uses: cloudflare/wrangler-action@2.0.0
-      with:
-        apiKey: ${{ secrets.CF_API_KEY }}
-        email: ${{ secrets.CF_EMAIL }}
+    deploy:
+        name: Deploy
+        steps:
+            uses: cloudflare/wrangler-action@2.0.0
+            with:
+                apiKey: ${{ secrets.CF_API_KEY }}
+                email: ${{ secrets.CF_EMAIL }}
 ```
 
 ## Configuration
@@ -63,69 +65,69 @@ If you need to install a specific version of Wrangler to use for deployment, you
 
 ```yaml
 jobs:
-  deploy:
-    steps:
-      uses: cloudflare/wrangler-action@2.0.0
-      with:
-        apiToken: ${{ secrets.CF_API_TOKEN }}
-        wranglerVersion: '1.6.0'
+    deploy:
+        steps:
+            uses: cloudflare/wrangler-action@2.0.0
+            with:
+                apiToken: ${{ secrets.CF_API_TOKEN }}
+                wranglerVersion: '1.6.0'
 ```
 
 Optionally, you can also pass a `workingDirectory` key to the action. This will allow you to specify a subdirectory of the repo to run the Wrangler command from.
 
 ```yaml
 jobs:
-  deploy:
-    steps:
-      uses: cloudflare/wrangler-action@2.0.0
-      with:
-        apiToken: ${{ secrets.CF_API_TOKEN }}
-        workingDirectory: 'subfoldername'
+    deploy:
+        steps:
+            uses: cloudflare/wrangler-action@2.0.0
+            with:
+                apiToken: ${{ secrets.CF_API_TOKEN }}
+                workingDirectory: 'subfoldername'
 ```
 
-[Worker secrets](https://developers.cloudflare.com/workers/tooling/wrangler/secrets/) can be optionally passed as a new line deliminated string of names in `secrets`.  Each secret name must match an environment variable name specified in the `env` attribute.  Creates or replaces the value for the Worker secret using the `wrangler secret put` command.
+[Worker secrets](https://developers.cloudflare.com/workers/tooling/wrangler/secrets/) can be optionally passed as a new line deliminated string of names in `secrets`. Each secret name must match an environment variable name specified in the `env` attribute. Creates or replaces the value for the Worker secret using the `wrangler secret put` command.
 
 ```yaml
 jobs:
-  deploy:
-    steps:
-      uses: cloudflare/wrangler-action@2.0.0
-      with:
-        apiToken: ${{ secrets.CF_API_TOKEN }}
-        secrets: |
-            SECRET1
-            SECRET2
-      env:
-        SECRET1: ${{ secrets.SECRET1 }}
-        SECRET2: ${{ secrets.SECRET2 }}
+    deploy:
+        steps:
+            uses: cloudflare/wrangler-action@2.0.0
+            with:
+                apiToken: ${{ secrets.CF_API_TOKEN }}
+                secrets: |
+                    SECRET1
+                    SECRET2
+            env:
+                SECRET1: ${{ secrets.SECRET1 }}
+                SECRET2: ${{ secrets.SECRET2 }}
 ```
 
 If you need to run additional shell commands before or after your command, you can specify them as input to `preCommands` (before `publish`) or `postCommands` (after `publish`). These can include additional `wrangler` commands (that is, `whoami`, `kv:key put`) or any other commands available inside the `wrangler-action` context.
 
 ```yaml
 jobs:
-  deploy:
-    steps:
-      uses: cloudflare/wrangler-action@2.0.0
-      with:
-        apiToken: ${{ secrets.CF_API_TOKEN }}
-        preCommands: echo "*** pre command ***"
-        postCommands: |
-          echo "*** post commands ***"
-          wrangler kv:key put --binding=MY_KV key2 value2
-          echo "******"
+    deploy:
+        steps:
+            uses: cloudflare/wrangler-action@2.0.0
+            with:
+                apiToken: ${{ secrets.CF_API_TOKEN }}
+                preCommands: echo "*** pre command ***"
+                postCommands: |
+                    echo "*** post commands ***"
+                    wrangler kv:key put --binding=MY_KV key2 value2
+                    echo "******"
 ```
 
 You can use the `command` option to do specific actions such as running `wrangler whoami` against your project:
 
 ```yaml
 jobs:
-  deploy:
-    steps:
-      uses: cloudflare/wrangler-action@2.0.0
-      with:
-        apiToken: ${{ secrets.CF_API_TOKEN }}
-        command: whoami
+    deploy:
+        steps:
+            uses: cloudflare/wrangler-action@2.0.0
+            with:
+                apiToken: ${{ secrets.CF_API_TOKEN }}
+                command: whoami
 ```
 
 ## Use cases
@@ -136,20 +138,20 @@ The above workflow examples have already shown how to run `wrangler-action` when
 
 ```yaml
 on:
-  push:
-    branches:
-      - main
+    push:
+        branches:
+            - main
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    name: Deploy
-    steps:
-      - uses: actions/checkout@v3
-      - name: Publish
-        uses: cloudflare/wrangler-action@2.0.0
-        with:
-          apiToken: ${{ secrets.CF_API_TOKEN }}
+    deploy:
+        runs-on: ubuntu-latest
+        name: Deploy
+        steps:
+            - uses: actions/checkout@v3
+            - name: Publish
+              uses: cloudflare/wrangler-action@2.0.0
+              with:
+                  apiToken: ${{ secrets.CF_API_TOKEN }}
 ```
 
 Note that there are a number of possible events, like `push`, that can be used to trigger a workflow. For more details on the events available, refer to the [GitHub Actions documentation](https://help.github.com/en/articles/workflow-syntax-for-github-actions#on).
@@ -162,17 +164,17 @@ If you want to deploy your Pages project with GitHub Actions rather than the bui
 on: [push]
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    name: Deploy
-    steps:
-      - uses: actions/checkout@v3
-      - name: Publish
-        uses: cloudflare/wrangler-action@2.0.0
-        with:
-          apiToken: ${{ secrets.CF_API_TOKEN }}
-          accountId: ${{ secrets.CF_ACCOUNT_ID }}
-          command: pages publish --project-name=example
+    deploy:
+        runs-on: ubuntu-latest
+        name: Deploy
+        steps:
+            - uses: actions/checkout@v3
+            - name: Publish
+              uses: cloudflare/wrangler-action@2.0.0
+              with:
+                  apiToken: ${{ secrets.CF_API_TOKEN }}
+                  accountId: ${{ secrets.CF_ACCOUNT_ID }}
+                  command: pages publish --project-name=example
 ```
 
 ### Deploying on a schedule
@@ -181,19 +183,19 @@ If you would like to deploy your Workers application on a recurring basis – fo
 
 ```yaml
 on:
-  schedule:
-    - cron: '0 * * * *'
+    schedule:
+        - cron: '0 * * * *'
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    name: Deploy
-    steps:
-      - uses: actions/checkout@v3
-      - name: Publish app
-        uses: cloudflare/wrangler-action@2.0.0
-        with:
-          apiToken: ${{ secrets.CF_API_TOKEN }}
+    deploy:
+        runs-on: ubuntu-latest
+        name: Deploy
+        steps:
+            - uses: actions/checkout@v3
+            - name: Publish app
+              uses: cloudflare/wrangler-action@2.0.0
+              with:
+                  apiToken: ${{ secrets.CF_API_TOKEN }}
 ```
 
 If you need help defining the correct cron syntax, check out [crontab.guru](https://crontab.guru/), which provides a friendly user interface for validating your cron schedule.
@@ -204,23 +206,23 @@ If you need to trigger a workflow at-will, you can use GitHub's `workflow_dispat
 
 ```yaml
 on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Choose an environment to deploy to: <dev|staging|prod>'
-        required: true
-        default: 'dev'
+    workflow_dispatch:
+        inputs:
+            environment:
+                description: 'Choose an environment to deploy to: <dev|staging|prod>'
+                required: true
+                default: 'dev'
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    name: Deploy
-    steps:
-      - uses: actions/checkout@v3
-      - name: Publish app
-        uses: cloudflare/wrangler-action@2.0.0
-        with:
-          apiToken: ${{ secrets.CF_API_TOKEN }}
-          command: publish --env ${{ github.event.inputs.environment }}
+    deploy:
+        runs-on: ubuntu-latest
+        name: Deploy
+        steps:
+            - uses: actions/checkout@v3
+            - name: Publish app
+              uses: cloudflare/wrangler-action@2.0.0
+              with:
+                  apiToken: ${{ secrets.CF_API_TOKEN }}
+                  command: publish --env ${{ github.event.inputs.environment }}
 ```
 
 For more advanced usage or to programmatically trigger the workflow from scripts, refer to [the GitHub documentation](https://docs.github.com/en/rest/reference/actions#create-a-workflow-dispatch-event) for making API calls.
@@ -239,14 +241,14 @@ You will need to add `account_id = ""` in your `wrangler.toml` file or set `acco
 on: [push]
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    name: Deploy
-    steps:
-      - uses: actions/checkout@v3
-      - name: Publish app
-        uses: cloudflare/wrangler-action@2.0.0
-        with:
-          apiToken: ${{ secrets.CF_API_TOKEN }}
-          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+    deploy:
+        runs-on: ubuntu-latest
+        name: Deploy
+        steps:
+            - uses: actions/checkout@v3
+            - name: Publish app
+              uses: cloudflare/wrangler-action@2.0.0
+              with:
+                  apiToken: ${{ secrets.CF_API_TOKEN }}
+                  accountId: ${{ secrets.CF_ACCOUNT_ID }}
 ```
