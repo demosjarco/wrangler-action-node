@@ -178,12 +178,17 @@ class Wrangler {
 					mainReject();
 				}
 
+				let wranglerCommand = 'wrangler';
+				if (this.WRANGLER_VERSION === 1) {
+					wranglerCommand = '@cloudflare/wrangler';
+				}
+
 				let secretCommand: string[] = [];
 
 				if (INPUT_ENVIRONMENT.length === 0) {
-					secretCommand = `npx wrangler secret put ${secret}`.split(' ');
+					secretCommand = `npx ${wranglerCommand} secret put ${secret}`.split(' ');
 				} else {
-					secretCommand = `npx wrangler secret put ${secret} --env ${INPUT_ENVIRONMENT}`.split(' ');
+					secretCommand = `npx ${wranglerCommand} secret put ${secret} --env ${INPUT_ENVIRONMENT}`.split(' ');
 				}
 
 				await new Promise<void>((childResolve, childReject) => {
@@ -234,11 +239,16 @@ class Wrangler {
 				deployCommand = 'publish';
 			}
 
+			let wranglerCommand = 'wrangler';
+			if (this.WRANGLER_VERSION === 1) {
+				wranglerCommand = '@cloudflare/wrangler';
+			}
+
 			console.warn(`::notice:: No command was provided, defaulting to '${deployCommand}'`);
 
 			if (INPUT_ENVIRONMENT.length === 0) {
 				return new Promise((resolve, reject) => {
-					exec(`npx wrangler ${deployCommand}`, { cwd: this.workingDirectory, env: process.env }, (error, stdout, stderr) => {
+					exec(`npx ${wranglerCommand} ${deployCommand}`, { cwd: this.workingDirectory, env: process.env }, (error, stdout, stderr) => {
 						if (error) {
 							console.error(error);
 							core.setFailed(error.message);
@@ -250,7 +260,7 @@ class Wrangler {
 				});
 			} else {
 				return new Promise((resolve, reject) => {
-					exec(`npx wrangler ${deployCommand} --env ${INPUT_ENVIRONMENT}`, { cwd: this.workingDirectory, env: process.env }, (error, stdout, stderr) => {
+					exec(`npx ${wranglerCommand} ${deployCommand} --env ${INPUT_ENVIRONMENT}`, { cwd: this.workingDirectory, env: process.env }, (error, stdout, stderr) => {
 						if (error) {
 							console.error(error);
 							core.setFailed(error.message);
@@ -266,7 +276,7 @@ class Wrangler {
 				console.warn(`::notice::Since you have specified an environment you need to make sure to pass in '--env ${INPUT_ENVIRONMENT}' to your command.`);
 			}
 
-			return this.execute_commands([`npx wrangler ${INPUT_COMMAND}`]);
+			return this.execute_commands([`npx ${wranglerCommand} ${INPUT_COMMAND}`]);
 		}
 	}
 }
