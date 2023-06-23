@@ -176,7 +176,7 @@ class Wrangler {
 					child.stdin.write(VALUE);
 					child.stdin.end();
 
-					child.stdout.on('data', (data) => console.log(data));
+					child.stdout.on('data', (data) => console.log(data.toString()));
 
 					child.once('error', (error) => {
 						console.error(error);
