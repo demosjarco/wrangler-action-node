@@ -165,9 +165,9 @@ class Wrangler {
 				let secretCommand: string[] = [];
 
 				if (INPUT_ENVIRONMENT.length === 0) {
-					secretCommand = `wrangler secret put ${secret}`.split(' ');
+					secretCommand = `npx wrangler secret put ${secret}`.split(' ');
 				} else {
-					secretCommand = `wrangler secret put ${secret} --env ${INPUT_ENVIRONMENT}`.split(' ');
+					secretCommand = `npx wrangler secret put ${secret} --env ${INPUT_ENVIRONMENT}`.split(' ');
 				}
 
 				await new Promise<void>((childResolve, childReject) => {
