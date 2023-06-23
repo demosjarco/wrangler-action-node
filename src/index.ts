@@ -126,7 +126,7 @@ class Wrangler {
 			let childError = false;
 			for (const command of commands) {
 				// Print out command before running
-				console.info(command);
+				console.info(`$ Running: ${command}`);
 				// Promise to wait for subcommand to finish before moving to next
 				await new Promise<void>((childResolve, childReject) => {
 					exec(command, { cwd: this.workingDirectory, env: process.env }, (error, stdout, stderr) => {
