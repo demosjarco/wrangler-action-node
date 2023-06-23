@@ -58,6 +58,7 @@ jobs:
       - name: (LOCAL) demosjarco/wrangler-action-node@${{ github.ref_name }}
         uses: ./
         with:
+          accountId: ${{ secrets.CF_ACCOUNT_ID_TESTING }}
           apiToken: ${{ secrets.CF_API_TOKEN_TESTING }}
           workingDirectory: test
           publish: false
@@ -92,6 +93,7 @@ jobs:
       - name: (LOCAL) demosjarco/wrangler-action-node@${{ github.ref_name }}
         uses: ./
         with:
+          accountId: ${{ secrets.CF_ACCOUNT_ID_TESTING }}
           apiToken: ${{ secrets.CF_API_TOKEN_TESTING }}
           environment: 'production'
           workingDirectory: test
@@ -115,6 +117,7 @@ jobs:
       - name: (LOCAL) demosjarco/wrangler-action-node@${{ github.ref_name }}
         uses: ./
         with:
+          accountId: ${{ secrets.CF_ACCOUNT_ID_TESTING }}
           apiKey: ${{ secrets.CLOUDFLARE_API_KEY_TESTING }}
           email: ${{ secrets.CLOUDFLARE_EMAIL_TESTING }}
           environment: 'production'
@@ -139,6 +142,7 @@ jobs:
       - name: (LOCAL) demosjarco/wrangler-action-node@${{ github.ref_name }}
         uses: ./
         with:
+          accountId: ${{ secrets.CF_ACCOUNT_ID_TESTING }}
           apiKey: ${{ secrets.CLOUDFLARE_API_KEY_TESTING }}
           email: ${{ secrets.CLOUDFLARE_EMAIL_TESTING }}
           environment: 'production'
@@ -164,6 +168,7 @@ jobs:
       - name: (LOCAL) demosjarco/wrangler-action-node@${{ github.ref_name }}
         uses: ./
         with:
+          accountId: ${{ secrets.CF_ACCOUNT_ID_TESTING }}
           apiToken: ${{ secrets.CF_API_TOKEN_TESTING }}
           environment: 'production'
           workingDirectory: test
