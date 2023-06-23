@@ -21,7 +21,7 @@ class Wrangler {
 		this.authenticationSetup(core.getInput('apiToken'), core.getInput('apiKey'), core.getInput('email'), core.getInput('accountId'));
 		await this.execute_commands(core.getMultilineInput('preCommands'));
 		await this.putSecrets(core.getMultilineInput('secrets'), core.getInput('environment'));
-		// TODO
+		await this.main_command(core.getInput('command'), core.getInput('environment'));
 		await this.execute_commands(core.getMultilineInput('postCommands'));
 	}
 
@@ -209,6 +209,44 @@ class Wrangler {
 		const errorMsg = `::error::Specified secret ${secret} not found in environment variables.`;
 		core.setFailed(errorMsg);
 		throw new Error(errorMsg);
+	}
+
+	private main_command(INPUT_COMMAND: string, INPUT_ENVIRONMENT: string): Promise<void> {
+		if (INPUT_COMMAND.length === 0) {
+			console.warn("::notice:: No command was provided, defaulting to 'publish'");
+
+			if (INPUT_ENVIRONMENT.length === 0) {
+				return new Promise((resolve, reject) => {
+					exec('npx wrangler publish', { cwd: this.workingDirectory, env: process.env }, (error, stdout, stderr) => {
+						if (error) {
+							console.error(error);
+							core.setFailed(error.message);
+							reject(error);
+						}
+						console.log(stdout);
+						resolve();
+					});
+				});
+			} else {
+				return new Promise((resolve, reject) => {
+					exec(`npx wrangler publish --env ${INPUT_ENVIRONMENT}`, { cwd: this.workingDirectory, env: process.env }, (error, stdout, stderr) => {
+						if (error) {
+							console.error(error);
+							core.setFailed(error.message);
+							reject(error);
+						}
+						console.log(stdout);
+						resolve();
+					});
+				});
+			}
+		} else {
+			if (INPUT_ENVIRONMENT.length === 0) {
+				console.warn(`::notice::Since you have specified an environment you need to make sure to pass in '--env ${INPUT_ENVIRONMENT}' to your command.`);
+			}
+
+			return this.execute_commands([`npx wrangler ${INPUT_COMMAND}`]);
+		}
 	}
 }
 
