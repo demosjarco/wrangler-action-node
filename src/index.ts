@@ -171,6 +171,11 @@ class Wrangler {
 					mainReject();
 				}
 
+				let npxCommand = 'npx';
+				if (process.env.RUNNER_OS === 'Windows') {
+					npxCommand = 'npx.cmd';
+				}
+
 				let wranglerCommand = 'wrangler';
 				if (this.WRANGLER_VERSION === 1) {
 					wranglerCommand = '@cloudflare/wrangler';
@@ -179,9 +184,9 @@ class Wrangler {
 				let secretCommand: string[] = [];
 
 				if (INPUT_ENVIRONMENT.length === 0) {
-					secretCommand = `npx ${wranglerCommand} secret put ${secret}`.split(' ');
+					secretCommand = `${npxCommand} ${wranglerCommand} secret put ${secret}`.split(' ');
 				} else {
-					secretCommand = `npx ${wranglerCommand} secret put ${secret} --env ${INPUT_ENVIRONMENT}`.split(' ');
+					secretCommand = `${npxCommand} ${wranglerCommand} secret put ${secret} --env ${INPUT_ENVIRONMENT}`.split(' ');
 				}
 
 				await new Promise<void>((childResolve, childReject) => {
