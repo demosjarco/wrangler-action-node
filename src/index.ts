@@ -39,23 +39,17 @@ class Wrangler {
 	}
 
 	private installWrangler(INPUT_WRANGLERVERSION: string): Promise<void> {
-		console.log('aaa', INPUT_WRANGLERVERSION);
-
 		let packageName = 'wrangler';
 		let versionToUse = '';
 
 		if (INPUT_WRANGLERVERSION.length === 0) {
 			// If no Wrangler version is specified install v2.
 		} else if (INPUT_WRANGLERVERSION.startsWith('1')) {
-			console.log('bbb', INPUT_WRANGLERVERSION.startsWith('1'));
-
 			// If Wrangler version starts with 1 then install wrangler v1
 			packageName = '@cloudflare/wrangler';
 			versionToUse = `@${INPUT_WRANGLERVERSION}`;
 			this.WRANGLER_VERSION = 1;
 		} else {
-			console.log('bbb', INPUT_WRANGLERVERSION.startsWith('1'));
-
 			// Else install Wrangler 2
 			versionToUse = `@${INPUT_WRANGLERVERSION}`;
 			this.WRANGLER_VERSION = Number(INPUT_WRANGLERVERSION[0]);
