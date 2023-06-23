@@ -104,8 +104,8 @@ jobs:
       - name: (LOCAL) demosjarco/wrangler-action-node@${{ github.ref_name }}
         uses: ./
         with:
-          apiKey: ${{ secrets.CLOUDFLARE_API_KEY }}
-          email: ${{ secrets.CLOUDFLARE_EMAIL }}
+          apiKey: ${{ secrets.CLOUDFLARE_API_KEY_TESTING }}
+          email: ${{ secrets.CLOUDFLARE_EMAIL_TESTING }}
           environment: 'production'
           workingDirectory: 'test'
           command: publish
