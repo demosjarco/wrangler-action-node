@@ -241,8 +241,8 @@ jobs:
           path: compiled
       - name: Setup Git
         run: |
-          git config user.name "DemosJarco"
-          git config user.email "1209494+demosjarco@users.noreply.github.com"
+          git config --local user.name "DemosJarco"
+          git config --local user.email "1209494+demosjarco@users.noreply.github.com"
       - run: git add compiled/
       - run: git commit -m "${{ github.event.head_commit.message }}"
       - run: git push
