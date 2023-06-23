@@ -169,7 +169,7 @@ class Wrangler {
 					await new Promise<void>((childResolve, childReject) => {
 						const child = spawn(`wrangler secret put ${secret}`, [], { cwd: this.workingDirectory, env: process.env, stdio: 'pipe' });
 
-						child.stdin.write(process.env[secret]);
+						child.stdin.write(VALUE);
 						child.stdin.end();
 
 						child.stdout.on('data', (data) => console.log(data));
@@ -197,7 +197,7 @@ class Wrangler {
 					await new Promise<void>((childResolve, childReject) => {
 						const child = spawn(`wrangler secret put ${secret} --env ${INPUT_ENVIRONMENT}`, [], { cwd: this.workingDirectory, env: process.env, stdio: 'pipe' });
 
-						child.stdin.write(process.env[secret]);
+						child.stdin.write(VALUE);
 						child.stdin.end();
 
 						child.stdout.on('data', (data) => console.log(data));
