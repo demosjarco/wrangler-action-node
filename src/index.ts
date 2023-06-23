@@ -152,7 +152,11 @@ class Wrangler {
 		});
 	}
 
-	private secret_not_found() {}
+	private secret_not_found(secret: string) {
+		const errorMsg = `::error::Specified secret ${secret} not found in environment variables.`;
+		core.setFailed(errorMsg);
+		throw new Error(errorMsg);
+	}
 }
 
 await new Wrangler().main();
