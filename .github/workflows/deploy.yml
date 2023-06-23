@@ -60,7 +60,6 @@ jobs:
           cache-dependency-path: 'test/package-lock.json'
       - run: npm ci
         working-directory: ./test
-      - run: npx wrangler -v
       - uses: actions/download-artifact@v3
         with:
           name: compiled
