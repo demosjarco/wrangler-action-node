@@ -61,6 +61,11 @@ jobs:
       - run: npm ci
         working-directory: ./test
       - run: npx wrangler -v
+      - name: Check environment
+        run: |
+          echo "PATH: $PATH"
+          echo "NODE_PATH: $NODE_PATH"
+          echo "NPM_PATH: $NPM_PATH"
       - uses: actions/download-artifact@v3
         with:
           name: compiled
