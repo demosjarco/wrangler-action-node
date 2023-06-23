@@ -1,6 +1,6 @@
 {
 	"name": "wrangler-action-node",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Easy-to-use GitHub Action to use [Wrangler](https://developers.cloudflare.com/workers/cli-wrangler/). Makes deploying Workers, Pages or modifying R2 easy to do.",
 	"type": "module",
 	"scripts": {
