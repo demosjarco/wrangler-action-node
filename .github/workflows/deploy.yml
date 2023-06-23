@@ -101,23 +101,32 @@ jobs:
   #       with:
   #         name: compiled
   #         path: compiled
-  # test-publish_hardcoded_wrangler_version:
-  #   needs: compile-action
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       os: [macos-latest, windows-latest, ubuntu-latest]
-  #   runs-on: ${{ matrix.os }}
-  #   steps:
-  #     - uses: step-security/harden-runner@v2
-  #       if: matrix.os == 'ubuntu-latest'
-  #       with:
-  #         egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/download-artifact@v3
-  #       with:
-  #         name: compiled
-  #         path: compiled
+  test-publish_hardcoded_wrangler_version:
+    needs: compile-action
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: step-security/harden-runner@v2
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
+        with:
+          name: compiled
+          path: compiled
+      - name: (LOCAL) demosjarco/wrangler-action-node@${{ github.ref_name }}
+        uses: ./
+        with:
+          apiKey: ${{ secrets.CLOUDFLARE_API_KEY_TESTING }}
+          email: ${{ secrets.CLOUDFLARE_EMAIL_TESTING }}
+          environment: 'production'
+          wranglerVersion: '1.5.0'
+          workingDirectory: 'test'
+          command: publish --dry-run
   test-publish_secrets:
     needs: compile-action
     strategy:
