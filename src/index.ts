@@ -91,7 +91,9 @@ class Wrangler {
 				this.CF_EMAIL = INPUT_EMAIL;
 				this.CF_API_KEY = INPUT_APIKEY;
 			} else {
-				core.setFailed('::error::Wrangler v2 does not support using the API Key. You should instead use an API token.');
+				const errorMsg = '::error::Wrangler v2 does not support using the API Key. You should instead use an API token.';
+				core.setFailed(errorMsg);
+				throw new Error(errorMsg);
 			}
 
 			this.API_CREDENTIALS = 'Email and API Key';
