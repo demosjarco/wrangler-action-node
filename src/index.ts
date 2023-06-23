@@ -136,7 +136,11 @@ class Wrangler {
 		// Global promise to safely wait for all subcommands to finish
 		return new Promise<void>(async (mainResolve, mainReject) => {
 			let childError = false;
-			for (const command of commands) {
+			for (let command of commands) {
+				// npx needs to be prepended to `wrangler`
+				if (command.startsWith('wrangler')) {
+					command = 'npx ' + command;
+				}
 				// Print out command before running
 				console.info(`$ Running: ${command}`);
 				// Promise to wait for subcommand to finish before moving to next
