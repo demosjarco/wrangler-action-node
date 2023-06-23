@@ -16,12 +16,9 @@ class Wrangler {
 	private CF_ACCOUNT_ID?: string;
 	private CLOUDFLARE_ACCOUNT_ID?: string;
 
-	constructor() {
-		this.authenticationSetup(core.getInput('apiToken'), core.getInput('apiKey'), core.getInput('email'), core.getInput('accountId'));
-	}
-
 	public async main() {
 		await this.installWrangler(core.getInput('wranglerVersion'));
+		this.authenticationSetup(core.getInput('apiToken'), core.getInput('apiKey'), core.getInput('email'), core.getInput('accountId'));
 		await this.execute_commands(core.getMultilineInput('preCommands'));
 		await this.putSecrets(core.getMultilineInput('secrets'), core.getInput('environment'));
 		// TODO
