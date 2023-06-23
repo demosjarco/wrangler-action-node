@@ -6,7 +6,7 @@ import { exec } from 'node:child_process';
 
 class Wrangler {
 	private API_CREDENTIALS: string = '';
-	private workingDirectory: string = this.setupWorkingDirectory(core.getInput('workingDirectory', { trimWhitespace: true }));
+	private workingDirectory: string = this.setupWorkingDirectory(core.getInput('workingDirectory'));
 	private WRANGLER_VERSION: number = 2;
 
 	private CF_API_TOKEN?: string;
@@ -17,14 +17,14 @@ class Wrangler {
 	private CLOUDFLARE_ACCOUNT_ID?: string;
 
 	constructor() {
-		this.authenticationSetup(core.getInput('apiToken', { trimWhitespace: true }), core.getInput('apiKey', { trimWhitespace: true }), core.getInput('email', { trimWhitespace: true }), core.getInput('accountId', { trimWhitespace: true }));
+		this.authenticationSetup(core.getInput('apiToken'), core.getInput('apiKey'), core.getInput('email'), core.getInput('accountId'));
 	}
 
 	public async main() {
-		await this.installWrangler(core.getInput('wranglerVersion', { trimWhitespace: true }));
-		await this.execute_commands(core.getMultilineInput('preCommands', { trimWhitespace: true }));
+		await this.installWrangler(core.getInput('wranglerVersion'));
+		await this.execute_commands(core.getMultilineInput('preCommands'));
 		// TODO
-		await this.execute_commands(core.getMultilineInput('postCommands', { trimWhitespace: true }));
+		await this.execute_commands(core.getMultilineInput('postCommands'));
 	}
 
 	private setupWorkingDirectory(workingDirectory: string = ''): string {
