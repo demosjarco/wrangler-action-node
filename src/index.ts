@@ -1,5 +1,4 @@
 import * as core from '@actions/core';
-import * as github from '@actions/github';
 
 import path from 'node:path';
 import { exec, spawn } from 'node:child_process';
