@@ -57,6 +57,7 @@ jobs:
           check-latest: true
           cache: 'npm'
           cache-dependency-path: 'test/package-lock.json'
+      - run: npx -v
       - uses: actions/download-artifact@v3
         with:
           name: compiled
