@@ -216,6 +216,8 @@ jobs:
     if: github.ref_name == 'main'
     needs: [test-build-only, test-publish, test-publish_legacy_credentials, test-publish_hardcoded_wrangler_version, test-publish_secrets]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: step-security/harden-runner@v2
         with:
@@ -226,3 +228,5 @@ jobs:
           name: compiled
           path: compiled
       # Commit ./compiled for it to work
+      - run: git commit -am "${{ github.event.head_commit.message }}"
+      - run: git push
