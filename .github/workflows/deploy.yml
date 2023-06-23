@@ -121,6 +121,7 @@ jobs:
           apiKey: ${{ secrets.CLOUDFLARE_API_KEY_TESTING }}
           email: ${{ secrets.CLOUDFLARE_EMAIL_TESTING }}
           environment: 'production'
+          wranglerVersion: '1.21.0'
           workingDirectory: 'test'
   test-publish_hardcoded_wrangler_version:
     needs: compile-action
@@ -146,7 +147,7 @@ jobs:
           apiKey: ${{ secrets.CLOUDFLARE_API_KEY_TESTING }}
           email: ${{ secrets.CLOUDFLARE_EMAIL_TESTING }}
           environment: 'production'
-          wranglerVersion: '1.5.0'
+          wranglerVersion: '1.21.0'
           workingDirectory: 'test'
   test-publish_secrets:
     needs: compile-action
