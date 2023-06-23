@@ -233,15 +233,15 @@ class Wrangler {
 	}
 
 	private main_command(INPUT_COMMAND: string, INPUT_ENVIRONMENT: string): Promise<void> {
+		let wranglerCommand = 'wrangler';
+		if (this.WRANGLER_VERSION === 1) {
+			wranglerCommand = '@cloudflare/wrangler';
+		}
+
 		if (INPUT_COMMAND.length === 0) {
 			let deployCommand = 'deploy';
 			if (this.WRANGLER_VERSION !== 3) {
 				deployCommand = 'publish';
-			}
-
-			let wranglerCommand = 'wrangler';
-			if (this.WRANGLER_VERSION === 1) {
-				wranglerCommand = '@cloudflare/wrangler';
 			}
 
 			console.warn(`::notice:: No command was provided, defaulting to '${deployCommand}'`);
