@@ -235,11 +235,6 @@ jobs:
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: lts/*
-          check-latest: true
-          cache: 'npm'
       - uses: actions/download-artifact@v3
         with:
           name: compiled
