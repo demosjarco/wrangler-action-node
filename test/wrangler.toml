@@ -1,3 +1,13 @@
+name = "debug-dev"
+main = "src/worker.js"
+compatibility_date = "2023-08-01"
+compatibility_flags = [ "nodejs_compat" ]
+workers_dev = true
+route = { pattern = "debug-dev.demosjarco.dev", custom_domain = true }
+usage_model = "bundled"
+minify = false
+
+[env.production]
 name = "debug"
 main = "src/worker.js"
 compatibility_date = "2023-08-01"
