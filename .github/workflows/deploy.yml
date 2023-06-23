@@ -67,7 +67,6 @@ jobs:
           accountId: ${{ secrets.CF_ACCOUNT_ID_TESTING }}
           apiToken: ${{ secrets.CF_API_TOKEN_TESTING }}
           workingDirectory: test
-          publish: false
           secrets: |
             SECRET1
             SECRET2
