@@ -1,5 +1,7 @@
 on:
   push:
+    tags-ignore:
+      - '*'
     paths:
       - '.github/workflows/deploy.yml'
       - 'src/**'
