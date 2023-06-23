@@ -7,7 +7,7 @@ import { exec, spawn } from 'node:child_process';
 class Wrangler {
 	private API_CREDENTIALS: string = '';
 	private workingDirectory: string = this.setupWorkingDirectory(core.getInput('workingDirectory'));
-	private WRANGLER_VERSION: number = 2;
+	private WRANGLER_VERSION: number = 3;
 
 	private CF_API_TOKEN?: string;
 	private CLOUDFLARE_API_TOKEN?: string;
@@ -58,7 +58,7 @@ class Wrangler {
 
 			// Else install Wrangler 2
 			versionToUse = `@${INPUT_WRANGLERVERSION}`;
-			this.WRANGLER_VERSION = 2;
+			this.WRANGLER_VERSION = Number(INPUT_WRANGLERVERSION[0]);
 		}
 
 		const command = `npm install --save-dev ${packageName}${versionToUse}`;
@@ -229,11 +229,16 @@ class Wrangler {
 
 	private main_command(INPUT_COMMAND: string, INPUT_ENVIRONMENT: string): Promise<void> {
 		if (INPUT_COMMAND.length === 0) {
-			console.warn("::notice:: No command was provided, defaulting to 'publish'");
+			let deployCommand = 'deploy';
+			if (this.WRANGLER_VERSION !== 3) {
+				deployCommand = 'publish';
+			}
+
+			console.warn(`::notice:: No command was provided, defaulting to '${deployCommand}'`);
 
 			if (INPUT_ENVIRONMENT.length === 0) {
 				return new Promise((resolve, reject) => {
-					exec('npx wrangler publish', { cwd: this.workingDirectory, env: process.env }, (error, stdout, stderr) => {
+					exec(`npx wrangler ${deployCommand}`, { cwd: this.workingDirectory, env: process.env }, (error, stdout, stderr) => {
 						if (error) {
 							console.error(error);
 							core.setFailed(error.message);
@@ -245,7 +250,7 @@ class Wrangler {
 				});
 			} else {
 				return new Promise((resolve, reject) => {
-					exec(`npx wrangler publish --env ${INPUT_ENVIRONMENT}`, { cwd: this.workingDirectory, env: process.env }, (error, stdout, stderr) => {
+					exec(`npx wrangler ${deployCommand} --env ${INPUT_ENVIRONMENT}`, { cwd: this.workingDirectory, env: process.env }, (error, stdout, stderr) => {
 						if (error) {
 							console.error(error);
 							core.setFailed(error.message);
