@@ -226,3 +226,6 @@ jobs:
 ```
 
 For more advanced usage or to programmatically trigger the workflow from scripts, refer to [the GitHub documentation](https://docs.github.com/en/rest/reference/actions#create-a-workflow-dispatch-event) for making API calls.
+
+## More Info
+See the [wiki](../../wiki) for more information
