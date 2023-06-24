@@ -25,7 +25,7 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - name: Publish
-              uses: cloudflare/wrangler-action@2.0.0
+              uses: demosjarco/wrangler-action-node@v1
               with:
                   apiToken: ${{ secrets.CF_API_TOKEN }}
 ```
@@ -41,7 +41,7 @@ jobs:
     deploy:
         name: Deploy
         steps:
-            uses: cloudflare/wrangler-action@2.0.0
+            uses: demosjarco/wrangler-action-node@v1
             with:
                 apiToken: ${{ secrets.CF_API_TOKEN }}
 ```
@@ -53,7 +53,7 @@ jobs:
     deploy:
         name: Deploy
         steps:
-            uses: cloudflare/wrangler-action@2.0.0
+            uses: demosjarco/wrangler-action-node@v1
             with:
                 apiKey: ${{ secrets.CF_API_KEY }}
                 email: ${{ secrets.CF_EMAIL }}
@@ -67,7 +67,7 @@ If you need to install a specific version of Wrangler to use for deployment, you
 jobs:
     deploy:
         steps:
-            uses: cloudflare/wrangler-action@2.0.0
+            uses: demosjarco/wrangler-action-node@v1
             with:
                 apiToken: ${{ secrets.CF_API_TOKEN }}
                 wranglerVersion: '1.6.0'
@@ -79,7 +79,7 @@ Optionally, you can also pass a `workingDirectory` key to the action. This will 
 jobs:
     deploy:
         steps:
-            uses: cloudflare/wrangler-action@2.0.0
+            uses: demosjarco/wrangler-action-node@v1
             with:
                 apiToken: ${{ secrets.CF_API_TOKEN }}
                 workingDirectory: 'subfoldername'
@@ -91,7 +91,7 @@ jobs:
 jobs:
     deploy:
         steps:
-            uses: cloudflare/wrangler-action@2.0.0
+            uses: demosjarco/wrangler-action-node@v1
             with:
                 apiToken: ${{ secrets.CF_API_TOKEN }}
                 secrets: |
@@ -108,7 +108,7 @@ If you need to run additional shell commands before or after your command, you c
 jobs:
     deploy:
         steps:
-            uses: cloudflare/wrangler-action@2.0.0
+            uses: demosjarco/wrangler-action-node@v1
             with:
                 apiToken: ${{ secrets.CF_API_TOKEN }}
                 preCommands: echo "*** pre command ***"
@@ -124,7 +124,7 @@ You can use the `command` option to do specific actions such as running `wrangle
 jobs:
     deploy:
         steps:
-            uses: cloudflare/wrangler-action@2.0.0
+            uses: demosjarco/wrangler-action-node@v1
             with:
                 apiToken: ${{ secrets.CF_API_TOKEN }}
                 command: whoami
@@ -149,7 +149,7 @@ jobs:
         steps:
             - uses: actions/checkout@v3
             - name: Publish
-              uses: cloudflare/wrangler-action@2.0.0
+              uses: demosjarco/wrangler-action-node@v1
               with:
                   apiToken: ${{ secrets.CF_API_TOKEN }}
 ```
@@ -170,7 +170,7 @@ jobs:
         steps:
             - uses: actions/checkout@v3
             - name: Publish
-              uses: cloudflare/wrangler-action@2.0.0
+              uses: demosjarco/wrangler-action-node@v1
               with:
                   apiToken: ${{ secrets.CF_API_TOKEN }}
                   accountId: ${{ secrets.CF_ACCOUNT_ID }}
@@ -193,7 +193,7 @@ jobs:
         steps:
             - uses: actions/checkout@v3
             - name: Publish app
-              uses: cloudflare/wrangler-action@2.0.0
+              uses: demosjarco/wrangler-action-node@v1
               with:
                   apiToken: ${{ secrets.CF_API_TOKEN }}
 ```
@@ -219,7 +219,7 @@ jobs:
         steps:
             - uses: actions/checkout@v3
             - name: Publish app
-              uses: cloudflare/wrangler-action@2.0.0
+              uses: demosjarco/wrangler-action-node@v1
               with:
                   apiToken: ${{ secrets.CF_API_TOKEN }}
                   command: publish --env ${{ github.event.inputs.environment }}
@@ -247,7 +247,7 @@ jobs:
         steps:
             - uses: actions/checkout@v3
             - name: Publish app
-              uses: cloudflare/wrangler-action@2.0.0
+              uses: demosjarco/wrangler-action-node@v1
               with:
                   apiToken: ${{ secrets.CF_API_TOKEN }}
                   accountId: ${{ secrets.CF_ACCOUNT_ID }}
