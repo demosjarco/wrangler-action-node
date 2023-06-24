@@ -4,8 +4,6 @@
 
 Easy-to-use GitHub Action to use [Wrangler](https://developers.cloudflare.com/workers/cli-wrangler/). Makes deploying Workers, Pages or modifying R2 easy to do.
 
-[Refer to Changelog for more information](CHANGELOG.md).
-
 ## Usage
 
 Add `wrangler-action` to the workflow for your Workers/Pages application. The below example will publish a Worker on a `git push` to the `main` branch:
