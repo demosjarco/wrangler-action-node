@@ -226,29 +226,3 @@ jobs:
 ```
 
 For more advanced usage or to programmatically trigger the workflow from scripts, refer to [the GitHub documentation](https://docs.github.com/en/rest/reference/actions#create-a-workflow-dispatch-event) for making API calls.
-
-## Troubleshooting
-
-### "I just started using Workers/Wrangler and I don't know what this is!"
-
-Refer to the [Quick Start guide](https://developers.cloudflare.com/workers/quickstart) to get started. Once you have a Workers application, you may want to set it up to automatically deploy from GitHub whenever you change your project.
-
-### "[ERROR] No account id found, quitting.."
-
-You will need to add `account_id = ""` in your `wrangler.toml` file or set `accountId` in this GitHub Action.
-
-```yaml
-on: [push]
-
-jobs:
-    deploy:
-        runs-on: ubuntu-latest
-        name: Deploy
-        steps:
-            - uses: actions/checkout@v3
-            - name: Publish app
-              uses: demosjarco/wrangler-action-node@v1
-              with:
-                  apiToken: ${{ secrets.CF_API_TOKEN }}
-                  accountId: ${{ secrets.CF_ACCOUNT_ID }}
-```
