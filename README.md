@@ -1,4 +1,4 @@
-# Wrangler (Node Edition) GitHub Action
+# Wrangler GitHub Action (Node Edition)
 
 > This is a direct logic copy of [@cloudflare/wrangler-action](https://github.com/cloudflare/wrangler-action) but written in pure Node.JS without any external dependencies
 
