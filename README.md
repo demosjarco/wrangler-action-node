@@ -130,7 +130,7 @@ jobs:
 
 ## Sponsors
 
-[![ChainFuse](https://github.com/ChainFuse.png?size=90)](https://github.com/ChainFuse)
+[![James](https://github.com/Cherry.png?size=90)](https://github.com/Cherry)[![ChainFuse](https://github.com/ChainFuse.png?size=90)](https://github.com/ChainFuse)
 
 ## More Info
 See the [wiki](../../wiki) for more information
