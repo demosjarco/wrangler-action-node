@@ -39,10 +39,6 @@ jobs:
           cache-dependency-path: 'test/package-lock.json'
       - run: npm ci
         working-directory: ./test
-      - uses: actions/download-artifact@v3
-        with:
-          name: compiled
-          path: compiled
       - name: (LOCAL) demosjarco/wrangler-action-node@${{ github.ref_name }}
         uses: ./
         with:
@@ -81,10 +77,6 @@ jobs:
           cache-dependency-path: 'test/package-lock.json'
       - run: npm ci
         working-directory: ./test
-      - uses: actions/download-artifact@v3
-        with:
-          name: compiled
-          path: compiled
       - name: (LOCAL) demosjarco/wrangler-action-node@${{ github.ref_name }}
         uses: ./
         with:
@@ -115,10 +107,6 @@ jobs:
           cache-dependency-path: 'test/package-lock.json'
       - run: npm ci
         working-directory: ./test
-      - uses: actions/download-artifact@v3
-        with:
-          name: compiled
-          path: compiled
       - name: (LOCAL) demosjarco/wrangler-action-node@${{ github.ref_name }}
         uses: ./
         with:
@@ -151,10 +139,6 @@ jobs:
           cache-dependency-path: 'test/package-lock.json'
       - run: npm ci
         working-directory: ./test
-      - uses: actions/download-artifact@v3
-        with:
-          name: compiled
-          path: compiled
       - name: (LOCAL) demosjarco/wrangler-action-node@${{ github.ref_name }}
         uses: ./
         with:
@@ -185,10 +169,6 @@ jobs:
           cache-dependency-path: 'test/package-lock.json'
       - run: npm ci
         working-directory: ./test
-      - uses: actions/download-artifact@v3
-        with:
-          name: compiled
-          path: compiled
       - name: (LOCAL) demosjarco/wrangler-action-node@${{ github.ref_name }}
         uses: ./
         with:
