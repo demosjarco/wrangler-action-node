@@ -1,3 +1,5 @@
+name: Branch Updater
+
 on:
   push:
     tags:

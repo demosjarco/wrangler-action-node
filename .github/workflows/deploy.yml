@@ -1,3 +1,5 @@
+name: Compile, Test, and Publish
+
 on:
   push:
     branches:
