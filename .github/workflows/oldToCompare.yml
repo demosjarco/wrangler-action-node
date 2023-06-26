@@ -18,33 +18,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  compile-action:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: step-security/harden-runner@v2
-        with:
-          disable-sudo: true
-          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: lts/*
-          check-latest: true
-          cache: 'npm'
-      - run: npm ci
-        working-directory: ./test
-      - name: Install action compiler
-        run: npm install -D @vercel/ncc
-      - name: Compile action
-        run: npx ncc build src/index.ts -o compiled
-      - uses: actions/upload-artifact@v3
-        with:
-          name: compiled
-          path: compiled
-          if-no-files-found: error
-          retention-days: 1
   test-build-only:
-    needs: compile-action
     strategy:
       fail-fast: false
       matrix:
@@ -87,7 +61,6 @@ jobs:
           SECRET1: ${{ secrets.SECRET1 }}
           SECRET2: ${{ secrets.SECRET2 }}
   test-publish:
-    needs: compile-action
     strategy:
       fail-fast: false
       matrix:
@@ -122,7 +95,6 @@ jobs:
   test-publish_legacy_credentials:
     # It's legacy (unsupported) wrangler so it's problaby gonna fail
     continue-on-error: true
-    needs: compile-action
     strategy:
       fail-fast: false
       matrix:
@@ -159,7 +131,6 @@ jobs:
   test-publish_hardcoded_wrangler_version:
     # It's legacy (unsupported) wrangler so it's problaby gonna fail
     continue-on-error: true
-    needs: compile-action
     strategy:
       fail-fast: false
       matrix:
@@ -194,7 +165,6 @@ jobs:
           wranglerVersion: '1.21.0'
           workingDirectory: 'test'
   test-publish_secrets:
-    needs: compile-action
     strategy:
       fail-fast: false
       matrix:
