@@ -1,0 +1,265 @@
+on:
+  push:
+    branches:
+      - '**'
+    paths:
+      - '.github/workflows/deploy.yml'
+      - 'src/**'
+      - 'test/**'
+      - 'action.yml'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'tsconfig.json'
+    tags-ignore:
+      - '**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  compile-action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: step-security/harden-runner@v2
+        with:
+          disable-sudo: true
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          check-latest: true
+          cache: 'npm'
+      - run: npm ci
+        working-directory: ./test
+      - name: Install action compiler
+        run: npm install -D @vercel/ncc
+      - name: Compile action
+        run: npx ncc build src/index.ts -o compiled
+      - uses: actions/upload-artifact@v3
+        with:
+          name: compiled
+          path: compiled
+          if-no-files-found: error
+          retention-days: 1
+  test-build-only:
+    needs: compile-action
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: step-security/harden-runner@v2
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          disable-sudo: true
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          check-latest: true
+          cache: 'npm'
+          cache-dependency-path: 'test/package-lock.json'
+      - run: npm ci
+        working-directory: ./test
+      - uses: actions/download-artifact@v3
+        with:
+          name: compiled
+          path: compiled
+      - name: (LOCAL) demosjarco/wrangler-action-node@${{ github.ref_name }}
+        uses: ./
+        with:
+          accountId: ${{ secrets.CF_ACCOUNT_ID_TESTING }}
+          apiToken: ${{ secrets.CF_API_TOKEN_TESTING }}
+          workingDirectory: test
+          secrets: |
+            SECRET1
+            SECRET2
+          preCommands: echo "*** pre commands ***"
+          postCommands: |
+            echo "*** post commands ***"
+            wrangler build
+            echo "******"
+        env:
+          SECRET1: ${{ secrets.SECRET1 }}
+          SECRET2: ${{ secrets.SECRET2 }}
+  test-publish:
+    needs: compile-action
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: step-security/harden-runner@v2
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          disable-sudo: true
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          check-latest: true
+          cache: 'npm'
+          cache-dependency-path: 'test/package-lock.json'
+      - run: npm ci
+        working-directory: ./test
+      - uses: actions/download-artifact@v3
+        with:
+          name: compiled
+          path: compiled
+      - name: (LOCAL) demosjarco/wrangler-action-node@${{ github.ref_name }}
+        uses: ./
+        with:
+          accountId: ${{ secrets.CF_ACCOUNT_ID_TESTING }}
+          apiToken: ${{ secrets.CF_API_TOKEN_TESTING }}
+          environment: 'production'
+          workingDirectory: test
+  test-publish_legacy_credentials:
+    # It's legacy (unsupported) wrangler so it's problaby gonna fail
+    continue-on-error: true
+    needs: compile-action
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: step-security/harden-runner@v2
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          disable-sudo: true
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          check-latest: true
+          cache: 'npm'
+          cache-dependency-path: 'test/package-lock.json'
+      - run: npm ci
+        working-directory: ./test
+      - uses: actions/download-artifact@v3
+        with:
+          name: compiled
+          path: compiled
+      - name: (LOCAL) demosjarco/wrangler-action-node@${{ github.ref_name }}
+        uses: ./
+        with:
+          accountId: ${{ secrets.CF_ACCOUNT_ID_TESTING }}
+          apiKey: ${{ secrets.CLOUDFLARE_API_KEY_TESTING }}
+          email: ${{ secrets.CLOUDFLARE_EMAIL_TESTING }}
+          environment: 'production'
+          wranglerVersion: '1.21.0'
+          workingDirectory: 'test'
+  test-publish_hardcoded_wrangler_version:
+    # It's legacy (unsupported) wrangler so it's problaby gonna fail
+    continue-on-error: true
+    needs: compile-action
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: step-security/harden-runner@v2
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          disable-sudo: true
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          check-latest: true
+          cache: 'npm'
+          cache-dependency-path: 'test/package-lock.json'
+      - run: npm ci
+        working-directory: ./test
+      - uses: actions/download-artifact@v3
+        with:
+          name: compiled
+          path: compiled
+      - name: (LOCAL) demosjarco/wrangler-action-node@${{ github.ref_name }}
+        uses: ./
+        with:
+          accountId: ${{ secrets.CF_ACCOUNT_ID_TESTING }}
+          apiKey: ${{ secrets.CLOUDFLARE_API_KEY_TESTING }}
+          email: ${{ secrets.CLOUDFLARE_EMAIL_TESTING }}
+          environment: 'production'
+          wranglerVersion: '1.21.0'
+          workingDirectory: 'test'
+  test-publish_secrets:
+    needs: compile-action
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: step-security/harden-runner@v2
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          disable-sudo: true
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          check-latest: true
+          cache: 'npm'
+          cache-dependency-path: 'test/package-lock.json'
+      - run: npm ci
+        working-directory: ./test
+      - uses: actions/download-artifact@v3
+        with:
+          name: compiled
+          path: compiled
+      - name: (LOCAL) demosjarco/wrangler-action-node@${{ github.ref_name }}
+        uses: ./
+        with:
+          accountId: ${{ secrets.CF_ACCOUNT_ID_TESTING }}
+          apiToken: ${{ secrets.CF_API_TOKEN_TESTING }}
+          environment: 'production'
+          workingDirectory: test
+          secrets: |
+            SECRET1
+            SECRET2
+          preCommands: echo "*** pre command ***"
+          postCommands: |
+            echo "*** post commands ***"
+            echo "******"
+        env:
+          SECRET1: ${{ secrets.SECRET1 }}
+          SECRET2: ${{ secrets.SECRET2 }}
+  publish-action:
+    if: github.ref_name == 'main'
+    # needs: [test-build-only, test-publish, test-publish_legacy_credentials, test-publish_hardcoded_wrangler_version, test-publish_secrets]
+    needs: [test-build-only, test-publish, test-publish_secrets]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: step-security/harden-runner@v2
+        with:
+          disable-sudo: true
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
+        with:
+          name: compiled
+          path: compiled
+      - name: Setup Git
+        run: |
+          git config --local user.name "DemosJarco"
+          git config --local user.email "1209494+demosjarco@users.noreply.github.com"
+      - run: git add compiled/
+      - run: git diff --staged --quiet || git commit -m '[ci skip] $PREVIOUS_GIT_MESSAGE'
+        shell: bash
+        env:
+          PREVIOUS_GIT_MESSAGE: ${{github.event.head_commit.message}}
+      - run: git push
