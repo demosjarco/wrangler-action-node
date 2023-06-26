@@ -49,7 +49,6 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
-        wrangler-package: ['./', cloudflare/wrangler-action@2.0.0]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: step-security/harden-runner@v2
@@ -71,7 +70,7 @@ jobs:
           name: compiled
           path: compiled
       - name: (LOCAL) demosjarco/wrangler-action-node@${{ github.ref_name }}
-        uses: ${{ matrix.wrangler-package }}
+        uses: ./
         with:
           accountId: ${{ secrets.CF_ACCOUNT_ID_TESTING }}
           apiToken: ${{ secrets.CF_API_TOKEN_TESTING }}
@@ -93,7 +92,6 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
-        wrangler-package: ['./', cloudflare/wrangler-action@2.0.0]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: step-security/harden-runner@v2
@@ -115,7 +113,7 @@ jobs:
           name: compiled
           path: compiled
       - name: (LOCAL) demosjarco/wrangler-action-node@${{ github.ref_name }}
-        uses: ${{ matrix.wrangler-package }}
+        uses: ./
         with:
           accountId: ${{ secrets.CF_ACCOUNT_ID_TESTING }}
           apiToken: ${{ secrets.CF_API_TOKEN_TESTING }}
@@ -129,7 +127,6 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
-        wrangler-package: ['./', cloudflare/wrangler-action@2.0.0]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: step-security/harden-runner@v2
@@ -151,7 +148,7 @@ jobs:
           name: compiled
           path: compiled
       - name: (LOCAL) demosjarco/wrangler-action-node@${{ github.ref_name }}
-        uses: ${{ matrix.wrangler-package }}
+        uses: ./
         with:
           accountId: ${{ secrets.CF_ACCOUNT_ID_TESTING }}
           apiKey: ${{ secrets.CLOUDFLARE_API_KEY_TESTING }}
@@ -167,7 +164,6 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
-        wrangler-package: ['./', cloudflare/wrangler-action@2.0.0]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: step-security/harden-runner@v2
@@ -189,7 +185,7 @@ jobs:
           name: compiled
           path: compiled
       - name: (LOCAL) demosjarco/wrangler-action-node@${{ github.ref_name }}
-        uses: ${{ matrix.wrangler-package }}
+        uses: ./
         with:
           accountId: ${{ secrets.CF_ACCOUNT_ID_TESTING }}
           apiKey: ${{ secrets.CLOUDFLARE_API_KEY_TESTING }}
@@ -203,7 +199,6 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
-        wrangler-package: ['./', cloudflare/wrangler-action@2.0.0]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: step-security/harden-runner@v2
@@ -225,7 +220,7 @@ jobs:
           name: compiled
           path: compiled
       - name: (LOCAL) demosjarco/wrangler-action-node@${{ github.ref_name }}
-        uses: ${{ matrix.wrangler-package }}
+        uses: ./
         with:
           accountId: ${{ secrets.CF_ACCOUNT_ID_TESTING }}
           apiToken: ${{ secrets.CF_API_TOKEN_TESTING }}
