@@ -2901,29 +2901,29 @@ class Wrangler {
         if (this.WRANGLER_VERSION === 1) {
             wranglerCommand = '@cloudflare/wrangler';
         }
+        let envVarArgument = '';
+        let envVars = {};
+        if (INPUT_VARS.length > 0) {
+            for (const envName of INPUT_VARS) {
+                if (process.env[envName] && process.env[envName]?.length !== 0) {
+                    envVars[envName] = process.env[envName];
+                }
+                else {
+                    this.var_not_found(envName);
+                }
+            }
+            envVarArgument = Object.entries(envVars)
+                .map(([key, value]) => `${key}:${value}`)
+                .join(' ')
+                .trim();
+            console.log('It will be', `npx wrangler deploy (--env something) --var ${envVarArgument}`);
+        }
         if (INPUT_COMMAND.length === 0) {
             let deployCommand = 'deploy';
             if (this.WRANGLER_VERSION !== 3) {
                 deployCommand = 'publish';
             }
             console.warn(`::notice:: No command was provided, defaulting to '${deployCommand}'`);
-            let envVarArgument = '';
-            let envVars = {};
-            if (INPUT_VARS.length > 0) {
-                for (const envName of INPUT_VARS) {
-                    if (process.env[envName] && process.env[envName]?.length !== 0) {
-                        envVars[envName] = process.env[envName];
-                    }
-                    else {
-                        this.var_not_found(envName);
-                    }
-                }
-                envVarArgument = Object.entries(envVars)
-                    .map(([key, value]) => `${key}:${value}`)
-                    .join(' ')
-                    .trim();
-                console.log('It will be', `npx wrangler deploy (--env something) --var ${envVarArgument}`);
-            }
             if (INPUT_ENVIRONMENT.length === 0) {
                 return new Promise((resolve, reject) => {
                     (0,node_child_process__WEBPACK_IMPORTED_MODULE_2__.exec)(`npx ${wranglerCommand} ${deployCommand}`, { cwd: this.workingDirectory, env: process.env }, (error, stdout, stderr) => {
