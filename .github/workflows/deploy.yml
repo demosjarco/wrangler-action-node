@@ -38,7 +38,7 @@ jobs:
       - name: Install action compiler
         run: npm install -D @vercel/ncc
       - name: Compile action
-        run: npx ncc build src/index.ts -o compiled
+        run: npx ncc build src/index.ts --v8-cache -o compiled
       - uses: actions/upload-artifact@v3
         with:
           name: compiled
