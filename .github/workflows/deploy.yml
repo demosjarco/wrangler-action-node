@@ -259,7 +259,7 @@ jobs:
         run: |
           git config --local user.name "DemosJarco"
           git config --local user.email "1209494+demosjarco@users.noreply.github.com"
-      - run: git add compiled/
+      - run: git add ./compiled/*
       - run: git commit -m "[ci skip] $PREVIOUS_GIT_MESSAGE"
         shell: bash
         env:
