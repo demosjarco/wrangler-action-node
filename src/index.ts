@@ -243,16 +243,16 @@ class Wrangler {
 		}
 
 		let envVarArgument = '';
-		let envVars: Record<string, string> = {};
+		let envVars = new Map<string, string>();
 		if (INPUT_VARS.length > 0) {
 			for (const envName of INPUT_VARS) {
 				if (process.env[envName] && process.env[envName]?.length !== 0) {
-					envVars[envName] = process.env[envName]!;
+					envVars.set(envName, process.env[envName]!);
 				} else {
 					this.var_not_found(envName);
 				}
 			}
-			envVarArgument = Object.entries(envVars)
+			envVarArgument = Array.from(envVars)
 				.map(([key, value]) => `${key}:${value}`)
 				.join(' ')
 				.trim();
