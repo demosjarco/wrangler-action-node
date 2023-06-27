@@ -260,10 +260,12 @@ class Wrangler {
 						this.var_not_found(envName);
 					}
 				}
-				envVarArgument = Array.from(envVars)
-					.map(([key, value]) => `${key}:${value}`)
-					.join(' ')
-					.trim();
+				envVarArgument =
+					'--var ' +
+					Array.from(envVars)
+						.map(([key, value]) => `${key}:${value}`)
+						.join(' ')
+						.trim();
 				console.log('It will be', `npx wrangler deploy (--env something) --var ${envVarArgument}`);
 			}
 
