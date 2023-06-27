@@ -266,7 +266,6 @@ class Wrangler {
 						.map(([key, value]) => `${key}:${value}`)
 						.join(' ')
 						.trim();
-				console.log('It will be', `npx wrangler deploy (--env something) --var ${envVarArgument}`);
 			}
 
 			if (INPUT_ENVIRONMENT.length === 0) {
