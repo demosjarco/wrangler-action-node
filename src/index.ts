@@ -270,7 +270,7 @@ class Wrangler {
 
 			if (INPUT_ENVIRONMENT.length === 0) {
 				return new Promise((resolve, reject) => {
-					exec(`npx ${wranglerCommand} ${deployCommand} ${envVarArgument}`, { cwd: this.workingDirectory, env: process.env }, (error, stdout, stderr) => {
+					exec(`npx ${wranglerCommand} ${deployCommand} ${envVarArgument}`.trim(), { cwd: this.workingDirectory, env: process.env }, (error, stdout, stderr) => {
 						if (error) {
 							console.error(error);
 							core.setFailed(error.message);
@@ -282,7 +282,7 @@ class Wrangler {
 				});
 			} else {
 				return new Promise((resolve, reject) => {
-					exec(`npx ${wranglerCommand} ${deployCommand} --env ${INPUT_ENVIRONMENT} ${envVarArgument}`, { cwd: this.workingDirectory, env: process.env }, (error, stdout, stderr) => {
+					exec(`npx ${wranglerCommand} ${deployCommand} --env ${INPUT_ENVIRONMENT} ${envVarArgument}`.trim(), { cwd: this.workingDirectory, env: process.env }, (error, stdout, stderr) => {
 						if (error) {
 							console.error(error);
 							core.setFailed(error.message);
