@@ -2705,7 +2705,7 @@ class Wrangler {
         this.authenticationSetup(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('apiToken'), _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('apiKey'), _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('email'), _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('accountId'));
         await this.execute_commands(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput('preCommands'));
         await this.putSecrets(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput('secrets'), _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('environment'));
-        await this.main_command(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('command'), _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('environment'));
+        await this.main_command(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('command'), _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('environment'), _actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput('vars'));
         await this.execute_commands(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput('postCommands'));
     }
     setupWorkingDirectory(workingDirectory = '') {
@@ -2891,7 +2891,12 @@ class Wrangler {
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(errorMsg);
         throw new Error(errorMsg);
     }
-    main_command(INPUT_COMMAND, INPUT_ENVIRONMENT) {
+    var_not_found(envVar) {
+        const errorMsg = `::error::Specified var ${envVar} not found in environment variables.`;
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(errorMsg);
+        throw new Error(errorMsg);
+    }
+    main_command(INPUT_COMMAND, INPUT_ENVIRONMENT, INPUT_VARS) {
         let wranglerCommand = 'wrangler';
         if (this.WRANGLER_VERSION === 1) {
             wranglerCommand = '@cloudflare/wrangler';
@@ -2902,6 +2907,23 @@ class Wrangler {
                 deployCommand = 'publish';
             }
             console.warn(`::notice:: No command was provided, defaulting to '${deployCommand}'`);
+            let envVarArgument = '';
+            let envVars = {};
+            if (INPUT_VARS.length > 0) {
+                for (const envName of INPUT_VARS) {
+                    if (process.env[envName] && process.env[envName]?.length !== 0) {
+                        envVars[envName] = process.env[envName];
+                    }
+                    else {
+                        this.var_not_found(envName);
+                    }
+                }
+                envVarArgument = Object.entries(envVars)
+                    .map(([key, value]) => `${key}:${value}`)
+                    .join(' ')
+                    .trim();
+                console.log('It will be', `npx wrangler deploy (--env something) --var ${envVarArgument}`);
+            }
             if (INPUT_ENVIRONMENT.length === 0) {
                 return new Promise((resolve, reject) => {
                     (0,node_child_process__WEBPACK_IMPORTED_MODULE_2__.exec)(`npx ${wranglerCommand} ${deployCommand}`, { cwd: this.workingDirectory, env: process.env }, (error, stdout, stderr) => {
