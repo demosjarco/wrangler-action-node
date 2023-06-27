@@ -20,7 +20,7 @@ class Wrangler {
 		this.authenticationSetup(core.getInput('apiToken'), core.getInput('apiKey'), core.getInput('email'), core.getInput('accountId'));
 		await this.execute_commands(core.getMultilineInput('preCommands'));
 		await this.putSecrets(core.getMultilineInput('secrets'), core.getInput('environment'));
-		await this.main_command(core.getInput('command'), core.getInput('environment'));
+		await this.main_command(core.getInput('command'), core.getInput('environment'), core.getMultilineInput('vars'));
 		await this.execute_commands(core.getMultilineInput('postCommands'));
 	}
 
@@ -230,7 +230,13 @@ class Wrangler {
 		throw new Error(errorMsg);
 	}
 
-	private main_command(INPUT_COMMAND: string, INPUT_ENVIRONMENT: string): Promise<void> {
+	private var_not_found(envVar: string) {
+		const errorMsg = `::error::Specified var ${envVar} not found in environment variables.`;
+		core.setFailed(errorMsg);
+		throw new Error(errorMsg);
+	}
+
+	private main_command(INPUT_COMMAND: string, INPUT_ENVIRONMENT: string, INPUT_VARS: string[]): Promise<void> {
 		let wranglerCommand = 'wrangler';
 		if (this.WRANGLER_VERSION === 1) {
 			wranglerCommand = '@cloudflare/wrangler';
@@ -243,6 +249,22 @@ class Wrangler {
 			}
 
 			console.warn(`::notice:: No command was provided, defaulting to '${deployCommand}'`);
+
+			let envVarArgument = '';
+			let envVars: Record<string, string> = {};
+			if (INPUT_VARS.length > 0) {
+				for (const envName of INPUT_VARS) {
+					if (process.env[envName] && process.env[envName]?.length !== 0) {
+						envVars[envName] = process.env[envName]!;
+					} else {
+						this.var_not_found(envName);
+					}
+				}
+				envVarArgument = Object.entries(envVars)
+					.map(([key, value]) => `${key}:${value}`)
+					.join(' ')
+					.trim();
+			}
 
 			if (INPUT_ENVIRONMENT.length === 0) {
 				return new Promise((resolve, reject) => {

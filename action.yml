@@ -28,6 +28,9 @@ inputs:
   wranglerVersion:
     description: "The version of Wrangler you'd like to use to publish your Workers project"
     required: false
+  vars:
+    description: 'A new line deliminated string of environment variable names that should be configured as Worker environment variables'
+    required: false
   secrets:
     description: 'A new line deliminated string of environment variable names that should be configured as Worker secrets'
     required: false
