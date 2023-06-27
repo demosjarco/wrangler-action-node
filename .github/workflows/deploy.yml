@@ -263,5 +263,5 @@ jobs:
       - run: git commit -m "[ci skip] $PREVIOUS_GIT_MESSAGE"
         shell: bash
         env:
-          PREVIOUS_GIT_MESSAGE: ${{github.event.head_commit.message}}
+          PREVIOUS_GIT_MESSAGE: ${{ github.event.head_commit.message }}
       - run: git push
