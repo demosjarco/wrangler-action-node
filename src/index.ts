@@ -242,23 +242,6 @@ class Wrangler {
 			wranglerCommand = '@cloudflare/wrangler';
 		}
 
-		let envVarArgument = '';
-		let envVars = new Map<string, string>();
-		if (INPUT_VARS.length > 0) {
-			for (const envName of INPUT_VARS) {
-				if (process.env[envName] && process.env[envName]?.length !== 0) {
-					envVars.set(envName, process.env[envName]!);
-				} else {
-					this.var_not_found(envName);
-				}
-			}
-			envVarArgument = Array.from(envVars)
-				.map(([key, value]) => `${key}:${value}`)
-				.join(' ')
-				.trim();
-			console.log('It will be', `npx wrangler deploy (--env something) --var ${envVarArgument}`);
-		}
-
 		if (INPUT_COMMAND.length === 0) {
 			let deployCommand = 'deploy';
 			if (this.WRANGLER_VERSION !== 3) {
@@ -266,6 +249,23 @@ class Wrangler {
 			}
 
 			console.warn(`::notice:: No command was provided, defaulting to '${deployCommand}'`);
+
+			let envVarArgument = '';
+			let envVars = new Map<string, string>();
+			if (INPUT_VARS.length > 0) {
+				for (const envName of INPUT_VARS) {
+					if (process.env[envName] && process.env[envName]?.length !== 0) {
+						envVars.set(envName, process.env[envName]!);
+					} else {
+						this.var_not_found(envName);
+					}
+				}
+				envVarArgument = Array.from(envVars)
+					.map(([key, value]) => `${key}:${value}`)
+					.join(' ')
+					.trim();
+				console.log('It will be', `npx wrangler deploy (--env something) --var ${envVarArgument}`);
+			}
 
 			if (INPUT_ENVIRONMENT.length === 0) {
 				return new Promise((resolve, reject) => {
