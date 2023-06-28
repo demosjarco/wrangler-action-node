@@ -67,6 +67,8 @@ jobs:
           cache-dependency-path: 'test/package-lock.json'
       - run: npm ci
         working-directory: ./test
+      - name: Delete old compiled action
+        run: rm -rv compiled
       - uses: actions/download-artifact@v3
         with:
           name: compiled
@@ -110,6 +112,8 @@ jobs:
           cache-dependency-path: 'test/package-lock.json'
       - run: npm ci
         working-directory: ./test
+      - name: Delete old compiled action
+        run: rm -rv compiled
       - uses: actions/download-artifact@v3
         with:
           name: compiled
@@ -145,6 +149,8 @@ jobs:
           cache-dependency-path: 'test/package-lock.json'
       - run: npm ci
         working-directory: ./test
+      - name: Delete old compiled action
+        run: rm -rv compiled
       - uses: actions/download-artifact@v3
         with:
           name: compiled
@@ -182,6 +188,8 @@ jobs:
           cache-dependency-path: 'test/package-lock.json'
       - run: npm ci
         working-directory: ./test
+      - name: Delete old compiled action
+        run: rm -rv compiled
       - uses: actions/download-artifact@v3
         with:
           name: compiled
@@ -217,6 +225,8 @@ jobs:
           cache-dependency-path: 'test/package-lock.json'
       - run: npm ci
         working-directory: ./test
+      - name: Delete old compiled action
+        run: rm -rv compiled
       - uses: actions/download-artifact@v3
         with:
           name: compiled
@@ -251,6 +261,8 @@ jobs:
           disable-sudo: true
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
       - uses: actions/checkout@v3
+      - name: Delete old compiled action
+        run: rm -rv compiled
       - uses: actions/download-artifact@v3
         with:
           name: compiled
