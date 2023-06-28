@@ -69,6 +69,7 @@ jobs:
         working-directory: ./test
       - name: Delete old compiled action
         run: rm -rv compiled
+        shell: bash
       - uses: actions/download-artifact@v3
         with:
           name: compiled
@@ -114,6 +115,7 @@ jobs:
         working-directory: ./test
       - name: Delete old compiled action
         run: rm -rv compiled
+        shell: bash
       - uses: actions/download-artifact@v3
         with:
           name: compiled
@@ -151,6 +153,7 @@ jobs:
         working-directory: ./test
       - name: Delete old compiled action
         run: rm -rv compiled
+        shell: bash
       - uses: actions/download-artifact@v3
         with:
           name: compiled
@@ -190,6 +193,7 @@ jobs:
         working-directory: ./test
       - name: Delete old compiled action
         run: rm -rv compiled
+        shell: bash
       - uses: actions/download-artifact@v3
         with:
           name: compiled
@@ -227,6 +231,7 @@ jobs:
         working-directory: ./test
       - name: Delete old compiled action
         run: rm -rv compiled
+        shell: bash
       - uses: actions/download-artifact@v3
         with:
           name: compiled
@@ -263,6 +268,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Delete old compiled action
         run: rm -rv compiled
+        shell: bash
       - uses: actions/download-artifact@v3
         with:
           name: compiled
