@@ -16,7 +16,7 @@
 		"url": "https://github.com/demosjarco/wrangler-action-node/issues"
 	},
 	"homepage": "https://github.com/demosjarco/wrangler-action-node#readme",
-	"prettier":"@demosjarco/prettier-config",
+	"prettier": "@demosjarco/prettier-config",
 	"dependencies": {
 		"@actions/core": "^1.10.0"
 	},
