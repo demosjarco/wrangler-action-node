@@ -20,6 +20,6 @@ export default {
 		for (const [key, value] of request.headers.entries()) {
 			temp.headers[key] = value;
 		}
-		return new Response(JSON.stringify({ ...request, ...temp }, null, '\t'), { headers: { 'Content-Type': 'application/json' } });
+		return new Response(JSON.stringify(temp, null, '\t'), { headers: { 'Content-Type': 'application/json' } });
 	},
 };
