@@ -41,7 +41,7 @@ jobs:
           cache-dependency-path: 'test/package-lock.json'
       - run: npm ci
         working-directory: ./test
-      - uses: cloudflare/wrangler-action@2.0.0
+      - uses: cloudflare/wrangler-action@v3.0.2
         with:
           accountId: ${{ secrets.CF_ACCOUNT_ID_TESTING }}
           apiToken: ${{ secrets.CF_API_TOKEN_TESTING }}
@@ -78,7 +78,7 @@ jobs:
           cache-dependency-path: 'test/package-lock.json'
       - run: npm ci
         working-directory: ./test
-      - uses: cloudflare/wrangler-action@2.0.0
+      - uses: cloudflare/wrangler-action@v3.0.2
         with:
           accountId: ${{ secrets.CF_ACCOUNT_ID_TESTING }}
           apiToken: ${{ secrets.CF_API_TOKEN_TESTING }}
@@ -107,7 +107,7 @@ jobs:
           cache-dependency-path: 'test/package-lock.json'
       - run: npm ci
         working-directory: ./test
-      - uses: cloudflare/wrangler-action@2.0.0
+      - uses: cloudflare/wrangler-action@v3.0.2
         with:
           accountId: ${{ secrets.CF_ACCOUNT_ID_TESTING }}
           apiKey: ${{ secrets.CLOUDFLARE_API_KEY_TESTING }}
@@ -138,7 +138,7 @@ jobs:
           cache-dependency-path: 'test/package-lock.json'
       - run: npm ci
         working-directory: ./test
-      - uses: cloudflare/wrangler-action@2.0.0
+      - uses: cloudflare/wrangler-action@v3.0.2
         with:
           accountId: ${{ secrets.CF_ACCOUNT_ID_TESTING }}
           apiKey: ${{ secrets.CLOUDFLARE_API_KEY_TESTING }}
@@ -167,7 +167,7 @@ jobs:
           cache-dependency-path: 'test/package-lock.json'
       - run: npm ci
         working-directory: ./test
-      - uses: cloudflare/wrangler-action@2.0.0
+      - uses: cloudflare/wrangler-action@v3.0.2
         with:
           accountId: ${{ secrets.CF_ACCOUNT_ID_TESTING }}
           apiToken: ${{ secrets.CF_API_TOKEN_TESTING }}
