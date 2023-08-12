@@ -2,7 +2,8 @@
 
 ---
 
-Update Aug 7, 2023: The official [`@cloudflare/wrangler-action`](https://github.com/cloudflare/wrangler-action) has now updated to v3.0.0 which is was also converted to TypeScript and no external deps (from Docker + Linux + Bash). As a result, this project will no longer be maintained and I recommend switching to the official one. This repo will be left up but archived.
+## Update Aug 7, 2023
+The official [`@cloudflare/wrangler-action`](https://github.com/cloudflare/wrangler-action) has now updated to v3.0.0 which is was also converted to TypeScript and no external deps (from Docker + Linux + Bash). As a result, this project will no longer be maintained and I recommend switching to the official one. This repo will be left up but archived.
 
 ---
 
