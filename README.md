@@ -1,5 +1,11 @@
 # Wrangler GitHub Action (Node Edition)
 
+---
+
+Update Aug 7, 2023: The official [`@cloudflare/wrangler-action`](https://github.com/cloudflare/wrangler-action) has now updated to v3.0.0 which is was also converted to TypeScript and no external deps (from Docker + Linux + Bash). As a result, this project will no longer be maintained and I recommend switching to the official one. This repo will be left up but archived.
+
+---
+
 > This is a direct logic copy of [@cloudflare/wrangler-action](https://github.com/cloudflare/wrangler-action) but written in pure Node.JS without any external dependencies
 
 Easy-to-use GitHub Action to use [Wrangler](https://developers.cloudflare.com/workers/cli-wrangler/). Makes deploying Workers, Pages or modifying R2 easy to do.
